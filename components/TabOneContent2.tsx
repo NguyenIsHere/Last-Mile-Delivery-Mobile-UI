@@ -361,6 +361,63 @@ export default function FullWidthScrollView () {
         <ButtonIcon name={PackageIcon} label='Thống kê chi phí' />
       </View>
 
+      {/* Đơn hàng đã lưu */}
+      <View style={styles.savedOrderGroup}>
+        <Text style={styles.titleText}>Đơn hàng đã lưu</Text>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false} // Ẩn thanh cuộn ngang (nếu có)
+          style={styles.savedOrderHorizontalList}
+        >
+          <View style={styles.orderListContainer}>
+            <TouchableOpacity style={styles.savedOrderItem}>
+              <View style={styles.orderContent}>
+                <PngIcon name={PackageIcon} size={24} />
+                <Text style={styles.boldText}>Nguyễn Văn A</Text>
+                <Text style={styles.normalText}>56/34 Hai Ba Trung St.</Text>
+              </View>
+              <View style={styles.dots}>
+                <Text style={styles.dot}>•</Text>
+                <Text style={styles.dot}>•</Text>
+              </View>
+              <View style={styles.orderContent}>
+                <PngIcon name={PackageIcon} size={24} />
+                <Text style={styles.boldText}>Trần Văn B</Text>
+                <Text style={styles.normalText}>Di An High School</Text>
+              </View>
+              <View style={styles.orderService}>
+                <PngIcon name={PackageIcon} size={24} />
+                <Text style={styles.blackText}>Instant</Text>
+                <PngIcon name={PackageIcon} size={24} />
+                <Text style={styles.blackText}>S • 1kg</Text>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.savedOrderItem}>
+              <View style={styles.orderContent}>
+                <PngIcon name={PackageIcon} size={24} />
+                <Text style={styles.boldText}>Nguyễn Văn A</Text>
+                <Text style={styles.normalText}>56/34 Hai Ba Trung St.</Text>
+              </View>
+              <View style={styles.dots}>
+                <Text style={styles.dot}>•</Text>
+                <Text style={styles.dot}>•</Text>
+              </View>
+              <View style={styles.orderContent}>
+                <PngIcon name={PackageIcon} size={24} />
+                <Text style={styles.boldText}>Trần Văn B</Text>
+                <Text style={styles.normalText}>Di An High School</Text>
+              </View>
+              <View style={styles.orderService}>
+                <PngIcon name={PackageIcon} size={24} />
+                <Text style={styles.blackText}>Instant</Text>
+                <PngIcon name={PackageIcon} size={24} />
+                <Text style={styles.blackText}>S • 1kg</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+
       {/* Banner quảng cáo */}
       <View>
         <Image source={banner} style={styles.banner} />
@@ -380,7 +437,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexGrow: 1,
     overflow: 'hidden',
-    backgroundColor: '#FFFFFD'
+    backgroundColor: '#FFFFFD',
+    padding: 16
   },
   headerText: {
     color: '#FDFDFF',
@@ -425,9 +483,8 @@ const styles = StyleSheet.create({
     borderRadius: 50
   },
   banner: {
-    width: screenWidth - 20,
+    width: '100%',
     height: 150,
-    margin: 10,
     borderRadius: 15
   },
   buttonsContainer: {
@@ -452,8 +509,7 @@ const styles = StyleSheet.create({
   addressContainer: {
     display: 'flex',
     height: 'auto',
-    width: screenWidth - 20,
-    marginLeft: 10,
+    width: '100%',
     marginTop: 20,
     backgroundColor: '#FDFDFF',
     elevation: 5,
@@ -557,5 +613,67 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     fontWeight: 'bold'
+  },
+  savedOrderGroup: {
+    marginTop: 16,
+    marginBottom: 20
+  },
+  savedOrderHorizontalList: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 8
+  },
+  orderListContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 16
+  },
+  savedOrderItem: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: 10,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    marginTop: 5,
+    borderWidth: 1.5,
+    borderColor: 'gray',
+    width: screenWidth - 32
+  },
+  orderContent: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10
+  },
+  boldText: {
+    fontWeight: 'bold'
+  },
+  normalText: {
+    color: 'gray'
+  },
+  dots: {
+    justifyContent: 'space-between',
+    height: 12, // Chiều cao tổng cộng của chuỗi dấu chấm
+    marginLeft: 12
+  },
+  dot: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#ccc'
+  },
+  orderService: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 10,
+    marginHorizontal: 4,
+    paddingTop: 10,
+    borderTopWidth: 0.5,
+    borderTopColor: 'gray',
+    gap: 8
+  },
+  blackText: {
+    color: 'black'
   }
 })
