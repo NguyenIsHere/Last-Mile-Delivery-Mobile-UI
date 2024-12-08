@@ -83,7 +83,9 @@ export default function ReceiverInfoInputScreen () {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.formGroup}>
-          <Text style={styles.labelText}>Địa chỉ</Text>
+          <Text style={styles.labelText}>
+            Địa chỉ <Text style={{ color: '#DF7065' }}>*</Text>
+          </Text>
           <TextInput
             style={styles.input}
             placeholder='Nhập địa chỉ'
@@ -94,7 +96,9 @@ export default function ReceiverInfoInputScreen () {
           />
         </View>
         <View style={styles.formGroup}>
-          <Text style={styles.labelText}>Số tầng, số tòa nhà</Text>
+          <Text style={styles.labelText}>
+            Số tầng, số tòa nhà <Text style={{ color: '#DF7065' }}>*</Text>
+          </Text>
           <TextInput
             style={styles.input}
             placeholder='Thêm số tầng hoặc số căn hộ'
@@ -103,9 +107,12 @@ export default function ReceiverInfoInputScreen () {
               setReceiverInfo({ ...ReceiverInfo, houseNumber })
             }
           />
+          <Text style={styles.characterCountText}>0/120</Text>
         </View>
         <View style={styles.formGroup}>
-          <Text style={styles.labelText}>Tên người liên lạc</Text>
+          <Text style={styles.labelText}>
+            Tên người liên lạc <Text style={{ color: '#DF7065' }}>*</Text>
+          </Text>
           <TextInput
             style={styles.input}
             placeholder='Tên'
@@ -114,7 +121,9 @@ export default function ReceiverInfoInputScreen () {
           />
         </View>
         <View style={styles.formGroup}>
-          <Text style={styles.labelText}>Số điện thoại</Text>
+          <Text style={styles.labelText}>
+            Số điện thoại <Text style={{ color: '#DF7065' }}>*</Text>
+          </Text>
           <TextInput
             style={styles.input}
             placeholder='Số điện thoại'
@@ -191,7 +200,7 @@ const styles = StyleSheet.create({
     elevation: 10
   },
   formGroup: {
-    marginBottom: 8
+    marginBottom: 10
   },
   titleText: {
     fontSize: 24,
@@ -201,7 +210,7 @@ const styles = StyleSheet.create({
   },
   labelText: {
     fontSize: 14,
-    marginBottom: 8,
+    marginBottom: 10,
     color: '#5D5D5D'
   },
   characterCountText: {
@@ -217,7 +226,7 @@ const styles = StyleSheet.create({
     padding: 16
   },
   submitButton: {
-    backgroundColor: '#E6E9E9',
+    backgroundColor: '#F5F6F6',
     width: '80%',
     alignSelf: 'center',
     padding: 16,

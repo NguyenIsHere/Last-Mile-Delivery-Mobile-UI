@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   ImageSourcePropType,
   Modal,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Animated
 } from 'react-native'
 
 import { useRouter } from 'expo-router'
@@ -87,6 +88,23 @@ export default function FullWidthScrollView () {
   const [deliveryOption, setDeliveryOption] = useState('')
   const [vehicleOption, setVehicleOption] = useState('')
 
+  const scrollAnimation = useRef(new Animated.Value(screenWidth - 32)).current // Bắt đầu ngoài màn hình phải
+
+  useEffect(() => {
+    const animateText = () => {
+      scrollAnimation.setValue(screenWidth - 32) // Reset về ngoài rìa phải
+      Animated.timing(scrollAnimation, {
+        toValue: -screenWidth + 200, // Kết thúc ngoài rìa trái
+        duration: 8000, // Thời gian di chuyển
+        useNativeDriver: true // Cải thiện hiệu năng
+      }).start(() => {
+        animateText() // Gọi lại để lặp vô hạn
+      })
+    }
+
+    animateText()
+  }, [screenWidth])
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false} // Ẩn thanh cuộn dọc
@@ -102,7 +120,23 @@ export default function FullWidthScrollView () {
             onPress={() => router.push('/addressInput')}
           >
             <PngIcon name={PackageIcon} size={24} />
-            <Text style={styles.boldText}>77/49 Hai Ba Trung St.</Text>
+            <Animated.View
+              style={{
+                transform: [
+                  {
+                    translateX: scrollAnimation
+                  }
+                ],
+                zIndex: -1
+              }}
+            >
+              <Text
+                style={{ zIndex: -1, fontWeight: 'bold' }}
+                numberOfLines={1}
+              >
+                77/49 Hai Ba Trung Street.
+              </Text>
+            </Animated.View>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.dotsAndSubText}
@@ -135,7 +169,8 @@ export default function FullWidthScrollView () {
               <Text style={styles.dot}>•</Text>
             </View>
             <Text style={{ fontWeight: 'bold', color: '#3282B9' }}>
-              Thêm thông tin người nhận
+              Thêm thông tin người nhận{' '}
+              <Text style={{ color: '#DF7065' }}>*</Text>
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -187,7 +222,8 @@ export default function FullWidthScrollView () {
           <View style={styles.rightContent}>
             <View style={styles.topContent}>
               <Text style={{ color: '#3282B9', fontWeight: 'bold' }}>
-                Thêm chi tiết món hàng
+                Thêm chi tiết món hàng{' '}
+                <Text style={{ color: '#DF7065' }}>*</Text>
               </Text>
               <SvgIcon Icon={RightArrow} size={16} color='#5D5D5D' />
             </View>
@@ -535,7 +571,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10
+    gap: 10,
+    overflow: 'hidden'
   },
   boldText: {
     fontWeight: 'bold'

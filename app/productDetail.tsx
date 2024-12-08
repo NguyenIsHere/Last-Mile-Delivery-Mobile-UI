@@ -112,7 +112,9 @@ export default function productDetailInputScreen () {
         <Image source={grabman} style={{ width: screenWidth, height: 200 }} />
         <View style={styles.form}>
           <View style={styles.sizeGroup}>
-            <Text style={styles.title}>Kích cỡ</Text>
+            <Text style={styles.title}>
+              Kích cỡ <Text style={{ color: '#DF7065' }}>*</Text>
+            </Text>
             <View style={styles.buttonGroup}>
               {sizes.map(size => (
                 <TouchableOpacity
@@ -137,7 +139,9 @@ export default function productDetailInputScreen () {
           </View>
 
           <View style={styles.weightGroup}>
-            <Text style={styles.title}>Trọng lượng</Text>
+            <Text style={styles.title}>
+              Trọng lượng <Text style={{ color: '#DF7065' }}>*</Text>
+            </Text>
             <View style={styles.weightInputGroup}>
               <TextInput
                 style={styles.input}
@@ -154,7 +158,9 @@ export default function productDetailInputScreen () {
           <Text>Thêm ảnh (Không bắt buộc)</Text>
         </TouchableOpacity>
         <View style={styles.typeGroup}>
-          <Text style={styles.typeGroupTitle}>Loại hàng hóa</Text>
+          <Text style={styles.typeGroupTitle}>
+            Loại hàng hóa <Text style={{ color: '#DF7065' }}>*</Text>
+          </Text>
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false} // Ẩn thanh cuộn ngang (nếu có)
