@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState } from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -9,8 +9,7 @@ import {
   TouchableOpacity,
   ImageSourcePropType,
   Modal,
-  TouchableWithoutFeedback,
-  Animated
+  TouchableWithoutFeedback
 } from 'react-native'
 
 import { useRouter } from 'expo-router'
@@ -46,7 +45,15 @@ function PngIcon ({
   size?: number
 }) {
   return (
-    <Image source={name} style={{ width: size, height: size, marginTop: 3 }} />
+    <Image
+      source={name}
+      style={{
+        width: size,
+        height: size,
+        marginTop: 3,
+        backgroundColor: 'white'
+      }}
+    />
   )
 }
 
@@ -88,23 +95,6 @@ export default function FullWidthScrollView () {
   const [deliveryOption, setDeliveryOption] = useState('')
   const [vehicleOption, setVehicleOption] = useState('')
 
-  const scrollAnimation = useRef(new Animated.Value(screenWidth - 32)).current // Bắt đầu ngoài màn hình phải
-
-  useEffect(() => {
-    const animateText = () => {
-      scrollAnimation.setValue(screenWidth - 32) // Reset về ngoài rìa phải
-      Animated.timing(scrollAnimation, {
-        toValue: -screenWidth + 200, // Kết thúc ngoài rìa trái
-        duration: 8000, // Thời gian di chuyển
-        useNativeDriver: true // Cải thiện hiệu năng
-      }).start(() => {
-        animateText() // Gọi lại để lặp vô hạn
-      })
-    }
-
-    animateText()
-  }, [screenWidth])
-
   return (
     <ScrollView
       showsVerticalScrollIndicator={false} // Ẩn thanh cuộn dọc
@@ -120,23 +110,9 @@ export default function FullWidthScrollView () {
             onPress={() => router.push('/addressInput')}
           >
             <PngIcon name={PackageIcon} size={24} />
-            <Animated.View
-              style={{
-                transform: [
-                  {
-                    translateX: scrollAnimation
-                  }
-                ],
-                zIndex: -1
-              }}
-            >
-              <Text
-                style={{ zIndex: -1, fontWeight: 'bold' }}
-                numberOfLines={1}
-              >
-                77/49 Hai Ba Trung Street.
-              </Text>
-            </Animated.View>
+            <Text style={{ fontWeight: 'bold' }} numberOfLines={1}>
+              77/49 Hai Ba Trung Street Thang Long Ward, Hai Chau District
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.dotsAndSubText}
