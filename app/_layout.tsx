@@ -10,7 +10,13 @@ import * as SplashScreen from 'expo-splash-screen'
 import { useEffect } from 'react'
 import 'react-native-reanimated'
 
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+
 import { useColorScheme } from '@/components/useColorScheme'
+
+import { useRouter } from 'expo-router'
+
+import LeftArrow from '../assets/icons/angle-small-left.svg'
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -51,8 +57,21 @@ export default function RootLayout () {
   return <RootLayoutNav />
 }
 
+function SvgIcon ({
+  Icon,
+  size = 24,
+  color = '#000'
+}: {
+  Icon: React.FC<React.ComponentProps<typeof LeftArrow>>
+  size?: number
+  color?: string
+}) {
+  return <Icon width={size} height={size} fill={color} />
+}
+
 function RootLayoutNav () {
   const colorScheme = useColorScheme()
+  const router = useRouter()
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -75,7 +94,56 @@ function RootLayoutNav () {
             animation: 'fade'
           }}
         />
+        <Stack.Screen
+          name='senderInfo'
+          options={{
+            title: 'Thông tin người gửi',
+            headerShown: false,
+            animation: 'fade'
+          }}
+        />
+        <Stack.Screen
+          name='orderDetail'
+          options={{
+            title: 'Chi tiết đơn hàng', // Tiêu đề màn hình
+            animation: 'fade',
+            header: () => (
+              <View style={styles.customHeader}>
+                <TouchableOpacity
+                  onPress={() => router.back()}
+                  style={styles.backButton}
+                >
+                  <SvgIcon Icon={LeftArrow} color='white' />
+                </TouchableOpacity>
+                <Text style={styles.title}>Chi tiết đơn hàng</Text>
+              </View>
+            )
+          }}
+        />
       </Stack>
     </ThemeProvider>
   )
 }
+
+const styles = StyleSheet.create({
+  customHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#3DB95B',
+    paddingHorizontal: 10,
+    paddingTop: 40
+  },
+  backButton: {
+    padding: 5
+  },
+  backButtonText: {
+    color: '#fff',
+    fontSize: 18
+  },
+  title: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginLeft: 16
+  }
+})

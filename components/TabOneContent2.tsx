@@ -138,7 +138,7 @@ export default function FullWidthScrollView () {
           <TouchableOpacity>
             <SvgIcon Icon={SearchIcon} size={20} color='#FDFDFF' />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => router.push('/orderDetail')}>
             <SvgIcon Icon={CouponIcon} size={20} color='#FDFDFF' />
           </TouchableOpacity>
           <TouchableOpacity>
@@ -159,198 +159,10 @@ export default function FullWidthScrollView () {
           label='Bạn muốn gửi hàng tới?'
           onPress={() => router.push('/addressInput')} // Điều hướng tương tự
         />
-        <ButtonIcon2
-          name={BoxAddressIcon}
-          label='Lấy hàng giao ngay'
-          onPress={() => setDeliveryOptionsVisible(true)} // Điều hướng tương tự
-        />
-        <ButtonIcon2
-          name={BoxAddressIcon}
-          label='Xe máy'
-          onPress={() => setVehicleOptionsVisible(true)} // Điều hướng tương tự
-        />
-        <ButtonIcon2
-          name={BoxAddressIcon}
-          label='Thêm chi tiết món hàng'
-          onPress={() => router.push('/productDetail')} // Điều hướng tương tự
-        />
-        {/* Modal chọn giao hàng */}
-        <Modal
-          visible={deliveryOptionsVisible}
-          transparent={true}
-          animationType='fade'
-          onRequestClose={() => setDeliveryOptionsVisible(false)}
-        >
-          <TouchableWithoutFeedback
-            onPress={() => setDeliveryOptionsVisible(false)}
-          >
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>
-                  Bạn muốn chọn dịch vụ giao nào?
-                </Text>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    deliveryOption === 'option 1' && styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
-                  ]}
-                  onPress={() => {
-                    console.log('Option 1 chosen')
-                    setDeliveryOption('option 1')
-                  }}
-                >
-                  <PngIcon name={PackageIcon} size={24} />
-                  <View style={styles.optionContent}>
-                    <View style={styles.optionTop}>
-                      <Text style={styles.optionTitle}>Siêu tốc</Text>
-                      <Text style={styles.optionTitle}>29.000đ</Text>
-                    </View>
-                    <Text style={styles.optionText}>
-                      Giao nhanh 30 phút/5km
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    deliveryOption === 'option 2' && styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
-                  ]}
-                  onPress={() => {
-                    console.log('Option 2 chosen')
-                    setDeliveryOption('option 2')
-                  }}
-                >
-                  <PngIcon name={PackageIcon} size={24} />
-                  <View style={styles.optionContent}>
-                    <View style={styles.optionTop}>
-                      <Text style={styles.optionTitle}>Tiết kiệm</Text>
-                    </View>
-                    <Text style={styles.optionTextAlert}>
-                      Chỉ khả dụng từ 6:00 đến 18:00
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    deliveryOption === 'option 3' && styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
-                  ]}
-                  onPress={() => {
-                    console.log('Option 3 chosen')
-                    setDeliveryOption('option 3')
-                  }}
-                >
-                  <PngIcon name={PackageIcon} size={24} />
-                  <View style={styles.optionContent}>
-                    <View style={styles.optionTop}>
-                      <Text style={styles.optionTitle}>Siêu rẻ</Text>
-                    </View>
-                    <Text style={styles.optionTextAlert}>
-                      Dịch vụ không khả dụng tại vị trí này
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.submitButton}
-                  onPress={() => {
-                    setDeliveryOptionsVisible(false)
-                  }}
-                >
-                  <Text style={styles.submitButtonText}>Chọn loại dịch vụ</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
-
-        {/* Modal chọn phương tiện */}
-
-        <Modal
-          visible={vehicleOptionsVisible}
-          transparent={true}
-          animationType='fade'
-          onRequestClose={() => setVehicleOptionsVisible(false)}
-        >
-          <TouchableWithoutFeedback
-            onPress={() => setVehicleOptionsVisible(false)}
-          >
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>Suggested</Text>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    vehicleOption === 'option 1' && styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
-                  ]}
-                  onPress={() => {
-                    console.log('Option 1 chosen')
-                    setVehicleOption('option 1')
-                    setVehicleOptionsVisible(false)
-                  }}
-                >
-                  <PngIcon name={PackageIcon} size={24} />
-                  <View style={styles.optionContent}>
-                    <View style={styles.optionTop}>
-                      <Text style={styles.optionTitle}>Xe máy</Text>
-                      <Text style={styles.optionTitle}>106.000đ</Text>
-                    </View>
-                    <Text style={styles.optionText}>
-                      Hàng hóa tối đa 30kg (50x40x50cm)
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    vehicleOption === 'option 2' && styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
-                  ]}
-                  onPress={() => {
-                    console.log('Option 2 chosen')
-                    setVehicleOption('option 2')
-                    setVehicleOptionsVisible(false)
-                  }}
-                >
-                  <PngIcon name={PackageIcon} size={24} />
-                  <View style={styles.optionContent}>
-                    <View style={styles.optionTop}>
-                      <Text style={styles.optionTitle}>Xe Tải/ Van 500kg</Text>
-                      <Text style={styles.optionTitle}>331.000đ</Text>
-                    </View>
-                    <Text style={styles.optionText}>
-                      Lên tới 500kg (160x120x120cm)
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    vehicleOption === 'option 3' && styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
-                  ]}
-                  onPress={() => {
-                    console.log('Option 3 chosen')
-                    setVehicleOption('option 3')
-                    setVehicleOptionsVisible(false)
-                  }}
-                >
-                  <PngIcon name={PackageIcon} size={24} />
-                  <View style={styles.optionContent}>
-                    <View style={styles.optionTop}>
-                      <Text style={styles.optionTitle}>Xe Tải/ Van 1000kg</Text>
-                      <Text style={styles.optionTitle}>403.000đ</Text>
-                    </View>
-                    <Text style={styles.optionText}>
-                      Lên tới 1000kg (200x150x150cm)
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
       </View>
 
       {/* Nút chia thành hai hàng */}
-      <View style={styles.buttonsContainer}>
+      {/* <View style={styles.buttonsContainer}>
         <ButtonIcon name={PackageIcon} label='Tạo đơn giao ngay' />
         <ButtonIcon name={PlaneIcon} label='Tạo đơn quốc tế' />
         <ButtonIcon name={SearchPackageIcon} label='Tra cứu đơn hàng' />
@@ -359,7 +171,7 @@ export default function FullWidthScrollView () {
         <ButtonIcon name={DollarIcon} label='Tra tính cước phí' />
         <ButtonIcon name={GuideIcon} label='Hướng dẫn sử dụng' />
         <ButtonIcon name={PackageIcon} label='Thống kê chi phí' />
-      </View>
+      </View> */}
 
       {/* Đơn hàng đã lưu */}
       <View style={styles.savedOrderGroup}>
@@ -419,6 +231,7 @@ export default function FullWidthScrollView () {
       </View>
 
       {/* Banner quảng cáo */}
+      <Text style={styles.titleText}>Khám phá ưu đãi ngay</Text>
       <View>
         <Image source={banner} style={styles.banner} />
       </View>
@@ -456,23 +269,26 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     display: 'flex',
-    width: screenWidth,
+    width: '100%',
     flexDirection: 'row',
     height: 70,
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 20,
-    marginTop: 10
+    marginTop: 10,
+    flex: 1
   },
   headerLeft: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
+    flex: 1
   },
   headerRight: {
     display: 'flex',
     flexDirection: 'row',
-    gap: 20
+    gap: 20,
+    flex: 1,
+    justifyContent: 'flex-end'
   },
   image: {
     width: 40,
@@ -535,8 +351,8 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 20,
     color: '#444',
-    marginLeft: 15,
     marginTop: 15,
+    marginBottom: 10,
     fontFamily: 'Quicksand-Bold'
   },
   modalContainer: {
@@ -615,7 +431,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   savedOrderGroup: {
-    marginTop: 16,
     marginBottom: 20
   },
   savedOrderHorizontalList: {
