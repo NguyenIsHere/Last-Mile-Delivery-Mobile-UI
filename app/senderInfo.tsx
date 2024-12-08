@@ -17,7 +17,9 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import CheckBox from '@react-native-community/checkbox'
 
 const map = require('../assets/images/map.jpg')
+
 import LeftArrow from '../assets/icons/angle-small-left.svg'
+import Check from '../assets/icons/check.svg'
 
 function SvgIcon ({
   Icon,
@@ -34,15 +36,28 @@ function SvgIcon ({
 export default function SenderInfoInputScreen () {
   const router = useRouter()
   const [senderInfo, setSenderInfo] = useState({
+    address: '',
+    houseNumber: '',
     name: '',
     phone: '',
-    address: ''
+    note: ''
   })
 
   const screenWidth = Dimensions.get('window').width
   const screenHeight = Dimensions.get('window').height
 
   const [isChecked, setIsChecked] = useState(false)
+
+  // Hàm kiểm tra nếu tất cả các trường bắt buộc đã được điền
+  const isFormComplete = () => {
+    const { address, houseNumber, name, phone } = senderInfo
+    return (
+      address.trim() !== '' &&
+      houseNumber.trim() !== '' &&
+      name.trim() !== '' &&
+      phone.trim() !== ''
+    )
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -63,14 +78,17 @@ export default function SenderInfoInputScreen () {
         </TouchableOpacity>
       </View>
       <Text style={styles.titleText}>Người gửi</Text>
-      <ScrollView style={styles.scrollView}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.formGroup}>
           <Text style={styles.labelText}>Địa chỉ</Text>
           <TextInput
             style={styles.input}
             placeholder='Nhập địa chỉ'
-            value={senderInfo.name}
-            onChangeText={name => setSenderInfo({ ...senderInfo, name })}
+            value={senderInfo.address}
+            onChangeText={address => setSenderInfo({ ...senderInfo, address })}
           />
         </View>
         <View style={styles.formGroup}>
@@ -78,8 +96,10 @@ export default function SenderInfoInputScreen () {
           <TextInput
             style={styles.input}
             placeholder='Thêm số tầng hoặc số căn hộ'
-            value={senderInfo.phone}
-            onChangeText={phone => setSenderInfo({ ...senderInfo, phone })}
+            value={senderInfo.houseNumber}
+            onChangeText={houseNumber =>
+              setSenderInfo({ ...senderInfo, houseNumber })
+            }
           />
         </View>
         <View style={styles.formGroup}>
@@ -87,8 +107,8 @@ export default function SenderInfoInputScreen () {
           <TextInput
             style={styles.input}
             placeholder='Tên'
-            value={senderInfo.address}
-            onChangeText={address => setSenderInfo({ ...senderInfo, address })}
+            value={senderInfo.name}
+            onChangeText={name => setSenderInfo({ ...senderInfo, name })}
           />
         </View>
         <View style={styles.formGroup}>
@@ -96,8 +116,8 @@ export default function SenderInfoInputScreen () {
           <TextInput
             style={styles.input}
             placeholder='Số điện thoại'
-            value={senderInfo.address}
-            onChangeText={address => setSenderInfo({ ...senderInfo, address })}
+            value={senderInfo.phone}
+            onChangeText={phone => setSenderInfo({ ...senderInfo, phone })}
           />
         </View>
         <View style={styles.formGroup}>
@@ -105,8 +125,8 @@ export default function SenderInfoInputScreen () {
           <TextInput
             style={styles.input}
             placeholder='Ghi chú cho tài xế'
-            value={senderInfo.address}
-            onChangeText={address => setSenderInfo({ ...senderInfo, address })}
+            value={senderInfo.note}
+            onChangeText={note => setSenderInfo({ ...senderInfo, note })}
           />
           <Text style={styles.characterCountText}>0/120</Text>
         </View>
@@ -117,19 +137,34 @@ export default function SenderInfoInputScreen () {
               Lưu thông tin người gửi cho các lần giao hàng sau
             </Text>
           </View>
-          <CheckBox
-            value={isChecked}
-            onValueChange={newValue => setIsChecked(newValue)}
-          />
+          <TouchableOpacity
+            style={[styles.checkbox, isChecked && styles.checkedBox]}
+            onPress={() => setIsChecked(!isChecked)}
+          >
+            {isChecked && <SvgIcon Icon={Check} size={16} color='#fff' />}
+          </TouchableOpacity>
         </View>
       </ScrollView>
       <TouchableOpacity
-        style={styles.submitButton}
+        style={[
+          styles.submitButtonActive,
+          !isFormComplete() && styles.submitButton // Đổi màu nút khi không thể bấm
+        ]}
         onPress={() => {
-          // router.push('/receiverInfoInput')
+          if (isFormComplete()) {
+            router.push('/orderDetail')
+          }
         }}
+        disabled={!isFormComplete()} // Vô hiệu hóa nút khi form chưa đầy đủ
       >
-        <Text style={styles.submitButtonText}>Xác nhận</Text>
+        <Text
+          style={[
+            styles.submitButtonTextActive,
+            !isFormComplete() && styles.submitButtonText // Đổi màu nút khi không thể bấm
+          ]}
+        >
+          Xác nhận
+        </Text>
       </TouchableOpacity>
     </SafeAreaView>
   )
@@ -142,8 +177,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     marginTop: 16,
-    paddingHorizontal: 16,
-    paddingBottom: 50
+    paddingHorizontal: 16
   },
   backButtonContainer: {
     position: 'absolute',
@@ -187,10 +221,18 @@ const styles = StyleSheet.create({
     padding: 16,
     borderRadius: 32,
     alignItems: 'center',
-    marginBottom: 32
+    marginBottom: 32,
+    marginTop: 16
   },
   submitButtonActive: {
-    backgroundColor: '#03B151'
+    backgroundColor: '#03B151',
+    width: '80%',
+    alignSelf: 'center',
+    padding: 16,
+    borderRadius: 32,
+    alignItems: 'center',
+    marginBottom: 32,
+    marginTop: 16
   },
   submitButtonText: {
     color: '#5D5D5D',
@@ -198,13 +240,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   submitButtonTextActive: {
-    color: '#fff'
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold'
   },
   saveInfoGroup: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 16
+    marginTop: 16,
+    marginBottom: 32
   },
   saveInfoTextGroup: {
     flexDirection: 'column'
@@ -216,5 +261,22 @@ const styles = StyleSheet.create({
   saveInfoSubText: {
     fontSize: 12,
     color: '#5D5D5D'
+  },
+  checkbox: {
+    width: 24,
+    height: 24,
+    borderWidth: 2,
+    borderColor: '#5D5D5D',
+    borderRadius: 4,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  checkedBox: {
+    backgroundColor: '#03B151',
+    borderColor: '#03B151'
+  },
+  checkmark: {
+    color: '#fff',
+    fontSize: 16
   }
 })

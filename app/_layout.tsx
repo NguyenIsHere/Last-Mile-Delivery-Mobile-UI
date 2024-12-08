@@ -103,6 +103,14 @@ function RootLayoutNav () {
           }}
         />
         <Stack.Screen
+          name='receiverInfo'
+          options={{
+            title: 'Thông tin người nhận',
+            headerShown: false,
+            animation: 'fade'
+          }}
+        />
+        <Stack.Screen
           name='orderDetail'
           options={{
             title: 'Chi tiết đơn hàng', // Tiêu đề màn hình

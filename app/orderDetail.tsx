@@ -126,7 +126,7 @@ export default function FullWidthScrollView () {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.dotsAndSubText}
-            onPress={() => router.push('/addressInput')}
+            onPress={() => router.push('/receiverInfo')}
           >
             <View style={styles.dots}>
               <Text style={styles.dot}>•</Text>
