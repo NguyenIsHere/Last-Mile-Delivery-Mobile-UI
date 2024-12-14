@@ -13,27 +13,29 @@ import {
 } from 'react-native'
 
 import { useRouter } from 'expo-router'
+import { useOrderContext } from '../context/orderContext'
 
 const PackageIcon = require('../assets/pngicons/013-on-time.png')
-const PlaneIcon = require('../assets/pngicons/009-cargo-plane.png')
-const SearchPackageIcon = require('../assets/pngicons/005-tracking.png')
-const PostOfficeIcon = require('../assets/pngicons/018-map.png')
-const DollarIcon = require('../assets/pngicons/011-tracking-1.png')
-const GuideIcon = require('../assets/pngicons/024-book-1.png')
+const MotorIcon = require('../assets/pngicons/002-delivery-bike.png')
+const TruckIcon = require('../assets/pngicons/001-delivery-truck.png')
+const VanIcon = require('../assets/pngicons/003-van.png')
 
-import SearchIcon from '../assets/icons/search.svg'
-import CouponIcon from '../assets/icons/ticket.svg'
-import BellIcon from '../assets/icons/bell.svg'
+const HeartBoxIcon = require('../assets/pngicons/004-box.png')
+const CheckBoxIcon = require('../assets/pngicons/005-box-1.png')
+const LikeBoxIcon = require('../assets/pngicons/006-box-2.png')
+const StarBoxIcon = require('../assets/pngicons/007-box-3.png')
+
+const DetailBoxIcon = require('../assets/pngicons/012-weight-scale.png')
+const VoucherIcon = require('../assets/pngicons/019-pennant.png')
+
+import BookmarkIcon from '../assets/icons/bookmark.svg'
 import LeftArrow from '../assets/icons/angle-small-left.svg'
 import RightArrow from '../assets/icons/angle-small-right.svg'
+import Round from '../assets/icons/dot-circle.svg'
 
 import Svg from 'react-native-svg'
-
-const AddressIcon = require('../assets/pngicons/015-location.png')
-const BoxAddressIcon = require('../assets/pngicons/004-location-pin.png')
-
-const avatar = require('../assets/images/Mei.png')
-const banner = require('../assets/images/banner.jpg')
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const screenWidth = Dimensions.get('window').width
 
@@ -79,11 +81,26 @@ function SvgIcon ({
   size = 24,
   color = '#000'
 }: {
-  Icon: React.FC<React.ComponentProps<typeof SearchIcon>>
+  Icon: React.FC<React.ComponentProps<typeof BookmarkIcon>>
   size?: number
   color?: string
 }) {
   return <Icon width={size} height={size} fill={color} />
+}
+
+function isItemDetailsComplete (itemDetails: {
+  size: string
+  weight: string
+  type: string
+  insurance: string
+}): boolean {
+  // Kiểm tra nếu mọi giá trị đều khác rỗng
+  return (
+    itemDetails.size.trim() !== '' &&
+    itemDetails.weight.trim() !== '' &&
+    itemDetails.type.trim() !== '' &&
+    itemDetails.insurance.trim() !== ''
+  )
 }
 
 export default function FullWidthScrollView () {
@@ -92,327 +109,468 @@ export default function FullWidthScrollView () {
   const [deliveryOptionsVisible, setDeliveryOptionsVisible] = useState(false)
   const [vehicleOptionsVisible, setVehicleOptionsVisible] = useState(false)
 
-  const [deliveryOption, setDeliveryOption] = useState('')
-  const [vehicleOption, setVehicleOption] = useState('')
+  const [deliveryOption, setDeliveryOption] = useState('option 1')
+  const [vehicleOption, setVehicleOption] = useState('option 1')
+
+  const { orderInfo, updateOrderInfo } = useOrderContext()
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false} // Ẩn thanh cuộn dọc
-      showsHorizontalScrollIndicator={false} // Ẩn thanh cuộn ngang (nếu có)
-      contentContainerStyle={[styles.container, { width: screenWidth }]}
-    >
-      <View style={styles.header}></View>
-      {/* Địa chỉ */}
-      <View style={styles.addressContainer}>
-        <View style={{ marginBottom: 10 }}>
-          <TouchableOpacity
-            style={styles.orderContent}
-            onPress={() => router.push('/addressInput')}
-          >
-            <PngIcon name={PackageIcon} size={24} />
-            <Text style={{ fontWeight: 'bold' }} numberOfLines={1}>
-              77/49 Hai Ba Trung Street Thang Long Ward, Hai Chau District
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.dotsAndSubText}
-            onPress={() => router.push('/senderInfo')}
-          >
-            <View style={styles.dots}>
-              <Text style={styles.dot}>•</Text>
-              <Text style={styles.dot}>•</Text>
-              <Text style={styles.dot}>•</Text>
-              <Text style={styles.dot}>•</Text>
-            </View>
-            <Text style={styles.normalText}>Trần Khôi Nguyên • 0867554432</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.orderContent}
-            onPress={() => router.push('/addressInput')}
-          >
-            <PngIcon name={PackageIcon} size={24} />
-            <Text style={styles.boldText}>Di An High School</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.dotsAndSubText}
-            onPress={() => router.push('/receiverInfo')}
-          >
-            <View style={styles.dots}>
-              <Text style={styles.dot}>•</Text>
-              <Text style={styles.dot}>•</Text>
-              <Text style={styles.dot}>•</Text>
-              <Text style={styles.dot}>•</Text>
-            </View>
-            <Text style={{ fontWeight: 'bold', color: '#3282B9' }}>
-              Thêm thông tin người nhận{' '}
-              <Text style={{ color: '#DF7065' }}>*</Text>
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.orderContent}
-            onPress={() => router.push('/addressInput')}
-          >
-            <PngIcon name={PackageIcon} size={24} />
-            <Text style={{ fontWeight: 'bold', color: 'gray' }}>
-              Thêm / Chỉnh sửa điểm giao
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <TouchableOpacity
-          style={styles.otherButton}
-          onPress={() => setDeliveryOptionsVisible(true)}
+    <>
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false} // Ẩn thanh cuộn dọc
+          showsHorizontalScrollIndicator={false} // Ẩn thanh cuộn ngang (nếu có)
+          contentContainerStyle={[styles.container, { width: screenWidth }]}
         >
-          <PngIcon name={PackageIcon} size={24} />
-          <View style={styles.rightContent}>
-            <View style={styles.topContent}>
-              <Text style={styles.boldText}>
-                Lấy hàng ngay (trong vòng 15 phút)
-              </Text>
-              <SvgIcon Icon={RightArrow} size={16} color='#5D5D5D' />
-            </View>
-            <Text style={styles.normalText}>Giao vào 17:58 • 1 Tiếng</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.otherButton}
-          onPress={() => setVehicleOptionsVisible(true)}
-        >
-          <PngIcon name={PackageIcon} size={24} />
-          <View style={styles.rightContent}>
-            <View style={styles.topContent}>
-              <Text style={styles.boldText}>Xe máy</Text>
-              <SvgIcon Icon={RightArrow} size={16} color='#5D5D5D' />
-            </View>
-            <Text style={styles.normalText}>
-              Đề xuất dựa trên chi tiết món hàng
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.otherButton}
-          onPress={() => router.push('/productDetail')}
-        >
-          <PngIcon name={PackageIcon} size={24} />
-          <View style={styles.rightContent}>
-            <View style={styles.topContent}>
-              <Text style={{ color: '#3282B9', fontWeight: 'bold' }}>
-                Thêm chi tiết món hàng{' '}
-                <Text style={{ color: '#DF7065' }}>*</Text>
-              </Text>
-              <SvgIcon Icon={RightArrow} size={16} color='#5D5D5D' />
-            </View>
-            <Text style={styles.normalText}>Delivery Guarantee • 1 Cơ bản</Text>
-          </View>
-        </TouchableOpacity>
-        {/* Modal chọn giao hàng */}
-        <Modal
-          visible={deliveryOptionsVisible}
-          transparent={true}
-          animationType='fade'
-          onRequestClose={() => setDeliveryOptionsVisible(false)}
-        >
-          <TouchableWithoutFeedback
-            onPress={() => setDeliveryOptionsVisible(false)}
-          >
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>
-                  Bạn muốn chọn dịch vụ giao nào?
+          <View style={styles.header}></View>
+          {/* Địa chỉ */}
+          <View style={styles.addressContainer}>
+            <View style={{ marginBottom: 10 }}>
+              <TouchableOpacity
+                style={styles.orderContent}
+                onPress={() => router.push('/addressInput')}
+              >
+                <SvgIcon Icon={Round} size={12} color='#3282B9' />
+                <Text
+                  style={
+                    orderInfo.senderIn4.address
+                      ? { fontWeight: 'bold', color: '#202020' }
+                      : { color: '#6B6B6B' }
+                  }
+                  numberOfLines={1}
+                >
+                  {orderInfo.senderIn4.address || 'Lấy hàng ở đâu?'}
                 </Text>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    deliveryOption === 'option 1' && styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
-                  ]}
-                  onPress={() => {
-                    console.log('Option 1 chosen')
-                    setDeliveryOption('option 1')
+                <LinearGradient
+                  colors={['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0)']}
+                  start={{ x: 1, y: 0 }}
+                  end={{ x: 0, y: 0 }}
+                  style={{
+                    flex: 1,
+                    position: 'absolute',
+                    width: 16,
+                    height: '100%',
+                    right: 0
                   }}
-                >
-                  <PngIcon name={PackageIcon} size={24} />
-                  <View style={styles.optionContent}>
-                    <View style={styles.optionTop}>
-                      <Text style={styles.optionTitle}>Siêu tốc</Text>
-                      <Text style={styles.optionTitle}>29.000đ</Text>
-                    </View>
-                    <Text style={styles.optionText}>
-                      Giao nhanh 30 phút/5km
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    deliveryOption === 'option 2' && styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
-                  ]}
-                  onPress={() => {
-                    console.log('Option 2 chosen')
-                    setDeliveryOption('option 2')
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.orderContent}
+                onPress={() => router.push('/senderInfo')}
+              >
+                <View style={styles.dots}>
+                  <View style={styles.dot}></View>
+                  <View style={styles.dot}></View>
+                  <View style={styles.dot}></View>
+                  <View style={styles.dot}></View>
+                </View>
+                <Text
+                  style={{
+                    color:
+                      orderInfo.senderIn4.name && orderInfo.senderIn4.phone
+                        ? '#6B6B6B'
+                        : '#1B6DC5',
+                    fontWeight:
+                      orderInfo.senderIn4.name && orderInfo.senderIn4.phone
+                        ? 'normal'
+                        : 'bold',
+                    marginBottom: 10
                   }}
+                  numberOfLines={1}
                 >
-                  <PngIcon name={PackageIcon} size={24} />
-                  <View style={styles.optionContent}>
-                    <View style={styles.optionTop}>
-                      <Text style={styles.optionTitle}>Tiết kiệm</Text>
-                    </View>
-                    <Text style={styles.optionTextAlert}>
-                      Chỉ khả dụng từ 6:00 đến 18:00
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    deliveryOption === 'option 3' && styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
-                  ]}
-                  onPress={() => {
-                    console.log('Option 3 chosen')
-                    setDeliveryOption('option 3')
+                  {orderInfo.senderIn4.name && orderInfo.senderIn4.phone ? (
+                    `${orderInfo.senderIn4.name} • ${orderInfo.senderIn4.phone}`
+                  ) : (
+                    <>
+                      Thêm thông tin người gửi
+                      <Text style={{ color: '#DF7065' }}>*</Text>
+                    </>
+                  )}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.orderContent}
+                onPress={() => router.push('/addressInput')}
+              >
+                <SvgIcon Icon={Round} size={12} color='#F75536' />
+                <Text
+                  style={
+                    orderInfo.receiverIn4.address
+                      ? { fontWeight: 'bold', color: '#202020' }
+                      : { color: '#6B6B6B' }
+                  }
+                  numberOfLines={1}
+                >
+                  {orderInfo.receiverIn4.address || 'Giao đến đâu?'}
+                </Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.orderContent}
+                onPress={() => router.push('/receiverInfo')}
+              >
+                <View style={styles.dots}>
+                  <View style={styles.dot}></View>
+                  <View style={styles.dot}></View>
+                  <View style={styles.dot}></View>
+                  <View style={styles.dot}></View>
+                </View>
+                <Text
+                  style={{
+                    color:
+                      orderInfo.receiverIn4.name && orderInfo.receiverIn4.phone
+                        ? '#6B6B6B'
+                        : '#1B6DC5',
+                    fontWeight:
+                      orderInfo.receiverIn4.name && orderInfo.receiverIn4.phone
+                        ? 'normal'
+                        : 'bold',
+                    marginBottom: 10
                   }}
+                  numberOfLines={1}
                 >
-                  <PngIcon name={PackageIcon} size={24} />
-                  <View style={styles.optionContent}>
-                    <View style={styles.optionTop}>
-                      <Text style={styles.optionTitle}>Siêu rẻ</Text>
-                    </View>
-                    <Text style={styles.optionTextAlert}>
-                      Dịch vụ không khả dụng tại vị trí này
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.optionSubmitButton}
-                  onPress={() => {
-                    setDeliveryOptionsVisible(false)
+                  {orderInfo.receiverIn4.name && orderInfo.receiverIn4.phone ? (
+                    `${orderInfo.receiverIn4.name} • ${orderInfo.receiverIn4.phone}`
+                  ) : (
+                    <>
+                      Thêm thông tin người nhận
+                      <Text style={{ color: '#DF7065' }}>*</Text>
+                    </>
+                  )}
+                </Text>
+
+                <LinearGradient
+                  colors={['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0)']}
+                  start={{ x: 1, y: 0 }}
+                  end={{ x: 0, y: 0 }}
+                  style={{
+                    flex: 1,
+                    position: 'absolute',
+                    width: 16,
+                    height: '100%',
+                    right: 0
                   }}
-                >
-                  <Text style={styles.optionSubmitButtonText}>
-                    Chọn loại dịch vụ
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.orderContent}
+                onPress={() => router.push('/addressInput')}
+              >
+                <SvgIcon Icon={Round} size={12} color='#C1C1C1' />
+                <Text style={{ fontWeight: 'bold', color: '#6B6B6B' }}>
+                  Thêm / Chỉnh sửa điểm giao
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <TouchableOpacity
+              style={styles.otherButton}
+              onPress={() => setDeliveryOptionsVisible(true)}
+            >
+              <PngIcon name={CheckBoxIcon} size={24} />
+              <View style={styles.rightContent}>
+                <View style={styles.topContent}>
+                  <Text style={styles.boldText}>
+                    Lấy hàng ngay (trong vòng 15 phút)
                   </Text>
-                </TouchableOpacity>
+                  <SvgIcon Icon={RightArrow} size={16} color='#5D5D5D' />
+                </View>
+                <Text style={styles.normalText}>Giao vào 17:58 • 1 Tiếng</Text>
               </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
-
-        {/* Modal chọn phương tiện */}
-
-        <Modal
-          visible={vehicleOptionsVisible}
-          transparent={true}
-          animationType='fade'
-          onRequestClose={() => setVehicleOptionsVisible(false)}
-        >
-          <TouchableWithoutFeedback
-            onPress={() => setVehicleOptionsVisible(false)}
-          >
-            <View style={styles.modalContainer}>
-              <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>Suggested</Text>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    vehicleOption === 'option 1' && styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
-                  ]}
-                  onPress={() => {
-                    console.log('Option 1 chosen')
-                    setVehicleOption('option 1')
-                    setVehicleOptionsVisible(false)
-                  }}
-                >
-                  <PngIcon name={PackageIcon} size={24} />
-                  <View style={styles.optionContent}>
-                    <View style={styles.optionTop}>
-                      <Text style={styles.optionTitle}>Xe máy</Text>
-                      <Text style={styles.optionTitle}>106.000đ</Text>
-                    </View>
-                    <Text style={styles.optionText}>
-                      Hàng hóa tối đa 30kg (50x40x50cm)
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    vehicleOption === 'option 2' && styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
-                  ]}
-                  onPress={() => {
-                    console.log('Option 2 chosen')
-                    setVehicleOption('option 2')
-                    setVehicleOptionsVisible(false)
-                  }}
-                >
-                  <PngIcon name={PackageIcon} size={24} />
-                  <View style={styles.optionContent}>
-                    <View style={styles.optionTop}>
-                      <Text style={styles.optionTitle}>Xe Tải/ Van 500kg</Text>
-                      <Text style={styles.optionTitle}>331.000đ</Text>
-                    </View>
-                    <Text style={styles.optionText}>
-                      Lên tới 500kg (160x120x120cm)
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={[
-                    styles.optionButton,
-                    vehicleOption === 'option 3' && styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
-                  ]}
-                  onPress={() => {
-                    console.log('Option 3 chosen')
-                    setVehicleOption('option 3')
-                    setVehicleOptionsVisible(false)
-                  }}
-                >
-                  <PngIcon name={PackageIcon} size={24} />
-                  <View style={styles.optionContent}>
-                    <View style={styles.optionTop}>
-                      <Text style={styles.optionTitle}>Xe Tải/ Van 1000kg</Text>
-                      <Text style={styles.optionTitle}>403.000đ</Text>
-                    </View>
-                    <Text style={styles.optionText}>
-                      Lên tới 1000kg (200x150x150cm)
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.otherButton}
+              onPress={() => setVehicleOptionsVisible(true)}
+            >
+              <PngIcon name={MotorIcon} size={24} />
+              <View style={styles.rightContent}>
+                <View style={styles.topContent}>
+                  <Text style={styles.boldText}>Xe máy</Text>
+                  <SvgIcon Icon={RightArrow} size={16} color='#5D5D5D' />
+                </View>
+                <Text style={styles.normalText}>
+                  Đề xuất dựa trên chi tiết món hàng
+                </Text>
               </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
-      </View>
-      <View style={styles.voucherGroup}>
-        <Text style={styles.voucherTitle}>Áp dụng ưu đãi</Text>
-        <TouchableOpacity style={styles.voucherButton}>
-          <PngIcon name={PackageIcon} size={24} />
-          <Text style={styles.normalText}>Áp dụng ưu đãi để được giảm giá</Text>
-          <SvgIcon Icon={RightArrow} size={16} color='#5D5D5D' />
-        </TouchableOpacity>
-      </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.otherButton}
+              onPress={() => router.push('/productDetail')}
+            >
+              <PngIcon name={DetailBoxIcon} size={24} />
+              <View style={styles.rightContent}>
+                <View style={styles.topContent}>
+                  <Text
+                    style={{
+                      color: isItemDetailsComplete(orderInfo.itemDetails)
+                        ? '#202020'
+                        : '#1B6DC5',
+                      fontWeight: 'bold'
+                    }}
+                    numberOfLines={1}
+                  >
+                    {isItemDetailsComplete(orderInfo.itemDetails) ? (
+                      `${orderInfo.itemDetails.size} • ${orderInfo.itemDetails.weight}kg • ${orderInfo.itemDetails.type}`
+                    ) : (
+                      <>
+                        Thêm chi tiết món hàng
+                        <Text style={{ color: '#DF7065' }}>*</Text>
+                      </>
+                    )}
+                  </Text>
+                  <SvgIcon Icon={RightArrow} size={16} color='#5D5D5D' />
+                </View>
+                <Text style={styles.normalText}>
+                  {isItemDetailsComplete(orderInfo.itemDetails)
+                    ? 'Delivery Guarantee • ' + orderInfo.itemDetails.insurance
+                    : 'Delivery Guarantee • Cơ bản'}
+                </Text>
+              </View>
+            </TouchableOpacity>
+            {/* Modal chọn giao hàng */}
+            <Modal
+              visible={deliveryOptionsVisible}
+              transparent={true}
+              animationType='fade'
+              onRequestClose={() => setDeliveryOptionsVisible(false)}
+            >
+              <TouchableWithoutFeedback
+                onPress={() => setDeliveryOptionsVisible(false)}
+              >
+                <View style={styles.modalContainer}>
+                  <View style={styles.modalContent}>
+                    <Text style={styles.modalTitle}>
+                      Bạn muốn chọn dịch vụ giao nào?
+                    </Text>
+                    <TouchableOpacity
+                      style={[
+                        styles.optionButton,
+                        deliveryOption === 'option 1' &&
+                          styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
+                      ]}
+                      onPress={() => {
+                        console.log('Option 1 chosen')
+                        setDeliveryOption('option 1')
+                      }}
+                    >
+                      <PngIcon name={CheckBoxIcon} size={24} />
+                      <View style={styles.optionContent}>
+                        <View style={styles.optionTop}>
+                          <Text style={styles.optionTitle}>Siêu tốc</Text>
+                          <Text style={styles.optionTitle}>
+                            29.000{' '}
+                            <Text style={{ textDecorationLine: 'underline' }}>
+                              đ
+                            </Text>
+                          </Text>
+                        </View>
+                        <Text style={styles.optionText}>
+                          Giao nhanh 30 phút/5km
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        styles.optionButton,
+                        deliveryOption === 'option 2' &&
+                          styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
+                      ]}
+                      onPress={() => {
+                        console.log('Option 2 chosen')
+                        setDeliveryOption('option 2')
+                      }}
+                    >
+                      <PngIcon name={LikeBoxIcon} size={24} />
+                      <View style={styles.optionContent}>
+                        <View style={styles.optionTop}>
+                          <Text style={styles.optionTitle}>Tiết kiệm</Text>
+                        </View>
+                        <Text style={styles.optionTextAlert}>
+                          Chỉ khả dụng từ 6:00 đến 18:00
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        styles.optionButton,
+                        deliveryOption === 'option 3' &&
+                          styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
+                      ]}
+                      onPress={() => {
+                        console.log('Option 3 chosen')
+                        setDeliveryOption('option 3')
+                      }}
+                    >
+                      <PngIcon name={HeartBoxIcon} size={24} />
+                      <View style={styles.optionContent}>
+                        <View style={styles.optionTop}>
+                          <Text style={styles.optionTitle}>Siêu rẻ</Text>
+                        </View>
+                        <Text style={styles.optionTextAlert}>
+                          Dịch vụ không khả dụng tại vị trí này
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.optionSubmitButton}
+                      onPress={() => {
+                        setDeliveryOptionsVisible(false)
+                      }}
+                    >
+                      <Text style={styles.optionSubmitButtonText}>
+                        Chọn loại dịch vụ
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </Modal>
 
-      {/* Saved info */}
-      <View style={styles.submitButtonContainer}>
-        <View style={styles.submitContainerText}>
-          <Text style={styles.submitContainerBlackText}>Tổng cộng</Text>
-          <Text style={styles.submitContainerBoldText}>19.000đ</Text>
+            {/* Modal chọn phương tiện */}
+
+            <Modal
+              visible={vehicleOptionsVisible}
+              transparent={true}
+              animationType='fade'
+              onRequestClose={() => setVehicleOptionsVisible(false)}
+            >
+              <TouchableWithoutFeedback
+                onPress={() => setVehicleOptionsVisible(false)}
+              >
+                <View style={styles.modalContainer}>
+                  <View style={styles.modalContent}>
+                    <Text style={styles.modalTitle}>Suggested</Text>
+                    <TouchableOpacity
+                      style={[
+                        styles.optionButton,
+                        vehicleOption === 'option 1' &&
+                          styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
+                      ]}
+                      onPress={() => {
+                        console.log('Option 1 chosen')
+                        setVehicleOption('option 1')
+                        setVehicleOptionsVisible(false)
+                      }}
+                    >
+                      <PngIcon name={MotorIcon} size={24} />
+                      <View style={styles.optionContent}>
+                        <View style={styles.optionTop}>
+                          <Text style={styles.optionTitle}>Xe máy</Text>
+                          <Text style={styles.optionTitle}>
+                            106.000{' '}
+                            <Text style={{ textDecorationLine: 'underline' }}>
+                              đ
+                            </Text>
+                          </Text>
+                        </View>
+                        <Text style={styles.optionText}>
+                          Hàng hóa tối đa 30kg (50x40x50cm)
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        styles.optionButton,
+                        vehicleOption === 'option 2' &&
+                          styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
+                      ]}
+                      onPress={() => {
+                        console.log('Option 2 chosen')
+                        setVehicleOption('option 2')
+                        setVehicleOptionsVisible(false)
+                      }}
+                    >
+                      <PngIcon name={VanIcon} size={24} />
+                      <View style={styles.optionContent}>
+                        <View style={styles.optionTop}>
+                          <Text style={styles.optionTitle}>
+                            Xe Tải/ Van 500kg
+                          </Text>
+                          <Text style={styles.optionTitle}>
+                            331.000{' '}
+                            <Text style={{ textDecorationLine: 'underline' }}>
+                              đ
+                            </Text>
+                          </Text>
+                        </View>
+                        <Text style={styles.optionText}>
+                          Lên tới 500kg (160x120x120cm)
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={[
+                        styles.optionButton,
+                        vehicleOption === 'option 3' &&
+                          styles.selectedOptionButton // Nếu được chọn, áp dụng style khác
+                      ]}
+                      onPress={() => {
+                        console.log('Option 3 chosen')
+                        setVehicleOption('option 3')
+                        setVehicleOptionsVisible(false)
+                      }}
+                    >
+                      <PngIcon name={TruckIcon} size={24} />
+                      <View style={styles.optionContent}>
+                        <View style={styles.optionTop}>
+                          <Text style={styles.optionTitle}>
+                            Xe Tải/ Van 1000kg
+                          </Text>
+                          <Text style={styles.optionTitle}>
+                            403.000{' '}
+                            <Text style={{ textDecorationLine: 'underline' }}>
+                              đ
+                            </Text>
+                          </Text>
+                        </View>
+                        <Text style={styles.optionText}>
+                          Lên tới 1000kg (200x150x150cm)
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </TouchableWithoutFeedback>
+            </Modal>
+          </View>
+          <View style={styles.voucherGroup}>
+            <Text style={styles.voucherTitle}>Áp dụng ưu đãi</Text>
+            <TouchableOpacity style={styles.voucherButton}>
+              <PngIcon name={VoucherIcon} size={24} />
+              <View style={styles.voucherText}>
+                <Text style={styles.normalText}>
+                  Áp dụng ưu đãi để được giảm giá
+                </Text>
+                <SvgIcon Icon={RightArrow} size={16} color='#5D5D5D' />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+        {/* Saved info */}
+        <View style={styles.submitButtonContainer}>
+          <View style={styles.submitContainerText}>
+            <Text style={styles.submitContainerBlackText}>Tổng cộng</Text>
+            <Text style={styles.submitContainerBoldText}>
+              19.000 <Text style={{ textDecorationLine: 'underline' }}>đ</Text>
+            </Text>
+          </View>
+          <View style={styles.submitButtonGroup}>
+            <TouchableOpacity style={styles.saveOrderButton}>
+              <SvgIcon Icon={BookmarkIcon} size={24} color='#2A5958' />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.submitButton}
+              onPress={() => router.push('/orderCheck')}
+            >
+              <Text style={styles.submitButtonText}>Kiểm tra đơn hàng</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <View style={styles.submitButtonGroup}>
-          <TouchableOpacity
-            style={styles.saveOrderButton}
-            // onPress={() => router.push('/addressInput')}
-          >
-            <SvgIcon Icon={CouponIcon} size={24} color='#2A5958' />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.submitButton}
-            // onPress={() => router.push('/addressInput')}
-          >
-            <Text style={styles.submitButtonText}>Kiểm tra đơn hàng</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+      </SafeAreaView>
+    </>
   )
 }
 
@@ -443,7 +601,12 @@ const styles = StyleSheet.create({
     elevation: 5,
     borderRadius: 10,
     paddingHorizontal: 14,
-    paddingTop: 14
+    paddingTop: 18
+  },
+  addressPart: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%'
   },
   button2: {
     display: 'flex',
@@ -548,20 +711,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    marginBottom: 4,
+    paddingHorizontal: 4
   },
   boldText: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: '#202020'
   },
   normalText: {
-    color: 'gray',
-    flex: 1
+    color: '#6B6B6B'
   },
   dots: {
     justifyContent: 'space-between',
-    height: 24, // Chiều cao tổng cộng của chuỗi dấu chấm
-    marginLeft: 12,
-    width: 22
+    alignItems: 'center',
+    width: 12,
+    gap: 4
   },
   dot: {
     width: 3,
@@ -569,27 +734,23 @@ const styles = StyleSheet.create({
     borderRadius: 1.5,
     backgroundColor: '#ccc'
   },
-  dotsAndSubText: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 5
-  },
+
   otherButton: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
     borderTopWidth: 0.5,
-    borderTopColor: 'gray',
-    paddingVertical: 20
+    borderTopColor: '#A4A4A4',
+    paddingVertical: 16
   },
   rightContent: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     marginLeft: 10,
-    flex: 1
+    flex: 1,
+    gap: 2
   },
   topContent: {
     display: 'flex',
@@ -691,7 +852,8 @@ const styles = StyleSheet.create({
   voucherGroup: {
     display: 'flex',
     flexDirection: 'column',
-    marginTop: 28
+    marginTop: 28,
+    width: '100%'
   },
   voucherTitle: {
     color: '#000',
@@ -703,13 +865,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     gap: 16,
     backgroundColor: '#FFFFFF'
   },
   voucherText: {
-    color: '#000',
-    fontSize: 16,
-    marginLeft: 10
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 1
   }
 })

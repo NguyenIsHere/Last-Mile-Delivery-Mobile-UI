@@ -7,9 +7,16 @@ import { useClientOnlyValue } from '@/components/useClientOnlyValue'
 import { Text } from '@/components/Themed'
 
 import HomeIcon from '../../assets/icons/house-window.svg'
+import HomeIconFill from '../../assets/icons/house-window-fill.svg'
+
 import RectangleListIcon from '../../assets/icons/rectangle-list.svg'
+import RectangleListIconFill from '../../assets/icons/rectangle-list-fill.svg'
+
 import MeetingIcon from '../../assets/icons/meeting.svg'
+import MeetingIconFill from '../../assets/icons/meeting-fill.svg'
+
 import SettingsIcon from '../../assets/icons/settings.svg'
+import SettingsIconFill from '../../assets/icons/settings-fill.svg'
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function SvgIcon ({
@@ -40,7 +47,9 @@ export default function TabLayout () {
         name='index'
         options={{
           title: 'Home',
-          tabBarIcon: ({ color }) => <SvgIcon Icon={HomeIcon} color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <SvgIcon Icon={focused ? HomeIconFill : HomeIcon} color={color} />
+          ),
           header: () => null
         }}
       />
@@ -48,8 +57,11 @@ export default function TabLayout () {
         name='two'
         options={{
           title: 'Đơn hàng',
-          tabBarIcon: ({ color }) => (
-            <SvgIcon Icon={RectangleListIcon} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <SvgIcon
+              Icon={focused ? RectangleListIconFill : RectangleListIcon}
+              color={color}
+            />
           ),
           header: () => null
         }}
@@ -58,8 +70,11 @@ export default function TabLayout () {
         name='three'
         options={{
           title: 'Cộng đồng',
-          tabBarIcon: ({ color }) => (
-            <SvgIcon Icon={MeetingIcon} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <SvgIcon
+              Icon={focused ? MeetingIconFill : MeetingIcon}
+              color={color}
+            />
           ),
           header: () => null
         }}
@@ -68,8 +83,11 @@ export default function TabLayout () {
         name='four'
         options={{
           title: 'Cài đặt',
-          tabBarIcon: ({ color }) => (
-            <SvgIcon Icon={SettingsIcon} color={color} />
+          tabBarIcon: ({ color, focused }) => (
+            <SvgIcon
+              Icon={focused ? SettingsIconFill : SettingsIcon}
+              color={color}
+            />
           ),
           header: () => null
         }}

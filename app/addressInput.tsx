@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   View,
   Text,
@@ -9,13 +9,20 @@ import {
   Image,
   TouchableOpacity,
   ImageSourcePropType,
-  TextInput
+  TextInput,
+  Keyboard
 } from 'react-native'
 import { useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useOrderContext } from '../context/orderContext'
 
 const AddressIcon = require('../assets/pngicons/015-location.png')
 const BoxAddressIcon = require('../assets/pngicons/004-location-pin.png')
+
+import Round from '../assets/icons/dot-circle.svg'
+import Clock from '../assets/icons/clock-five.svg'
+import Map from '../assets/icons/region-pin-alt.svg'
+import Back from '../assets/icons/arrow-small-left.svg'
 
 const screenWidth = Dimensions.get('window').width
 const screenHeight = Dimensions.get('window').height
@@ -28,6 +35,18 @@ function PngIcon ({
   size?: number
 }) {
   return <Image source={name} style={{ width: size, height: size }} />
+}
+
+function SvgIcon ({
+  Icon,
+  size = 24,
+  color = '#000'
+}: {
+  Icon: React.FC<React.ComponentProps<typeof Round>>
+  size?: number
+  color?: string
+}) {
+  return <Icon width={size} height={size} fill={color} />
 }
 
 // TabButton component
@@ -57,7 +76,7 @@ function TabButton ({
 function AddressItem ({ title, address }: { title: string; address: string }) {
   return (
     <View style={styles.addressItem}>
-      <PngIcon name={BoxAddressIcon} size={24} />
+      <SvgIcon Icon={Clock} size={16} color='#3BB1E8' />
       <View style={styles.addressTextGroup}>
         <Text style={styles.addressTitle}>{title}</Text>
         <Text style={styles.addressDetail}>{address}</Text>
@@ -67,12 +86,6 @@ function AddressItem ({ title, address }: { title: string; address: string }) {
 }
 
 export default function AddressInputScreen () {
-  const router = useRouter()
-  const [activeTab, setActiveTab] = useState('recently')
-  const [searchQueryFrom, setSearchQueryFrom] = useState('')
-  const [searchQueryTo, setSearchQueryTo] = useState('')
-  const [activeInput, setActiveInput] = useState<'from' | 'to' | null>(null)
-
   // Fake data for demonstration
   const recentlyUsedAddresses = [
     {
@@ -128,6 +141,23 @@ export default function AddressInputScreen () {
     }
   ]
 
+  const router = useRouter()
+  const [activeTab, setActiveTab] = useState('recently')
+  const [searchQueryFrom, setSearchQueryFrom] = useState('')
+  const [searchQueryTo, setSearchQueryTo] = useState('')
+  const [activeInput, setActiveInput] = useState<'from' | 'to' | null>('to')
+  const { orderInfo, updateOrderInfo } = useOrderContext()
+
+  useEffect(() => {
+    console.log('OrderInfo updated:', orderInfo)
+  }, [orderInfo]) // Theo dõi khi orderInfo thay đổi
+
+  // Hàm cập nhật thông tin khi nhấn OK hoặc bàn phím mất
+  // const handleSave = () => {
+  //   updateOrderInfo({ senderAddress, receiverAddress }) // Cập nhật thông tin senderAddress
+  // }
+
+  // Fake data for demonstration
   const searchAddresses = [
     {
       title: 'Trường THPT Dĩ An',
@@ -182,32 +212,99 @@ export default function AddressInputScreen () {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.searchbar}>
-        <View style={styles.searchInputGroup}>
-          <PngIcon name={AddressIcon} size={24} />
-          <TextInput
-            placeholder='Lấy hàng tại đâu?'
-            value={searchQueryFrom}
-            onFocus={() => handleInputFocus('from')}
-            onChangeText={text => setSearchQueryFrom(text)} // Cập nhật trạng thái khi người dùng nhập
-            style={styles.input}
-          />
+      <View style={styles.topContainer}>
+        <View style={styles.backContainer}>
+          <TouchableOpacity onPress={() => router.back()}>
+            <SvgIcon Icon={Back} size={32} color='#202020' />
+          </TouchableOpacity>
         </View>
-        <View style={styles.searchInputGroup}>
-          <PngIcon name={BoxAddressIcon} size={24} />
-          <TextInput
-            placeholder='Giao đến đâu?'
-            style={styles.input}
-            value={searchQueryTo}
-            onFocus={() => handleInputFocus('to')}
-            onChangeText={text => setSearchQueryTo(text)} // Cập nhật trạng thái khi người dùng nhập
-          />
+        <View style={styles.searchbar}>
+          {/* Input "Lấy hàng tại đâu?" */}
+          <View
+            style={[
+              styles.searchInputGroup,
+              activeInput === 'to' && { backgroundColor: '#FFFFFF' }
+            ]}
+          >
+            <SvgIcon Icon={Round} size={12} color='#3282B9' />
+            <TextInput
+              placeholder='Lấy hàng tại đâu?'
+              value={orderInfo.senderIn4.address}
+              onFocus={() => {
+                handleInputFocus('from')
+              }}
+              onChangeText={text => {
+                updateOrderInfo({
+                  senderIn4: {
+                    ...orderInfo.senderIn4,
+                    address: text
+                  }
+                })
+                setSearchQueryFrom(text)
+              }}
+              onSubmitEditing={() => {
+                updateOrderInfo
+              }} // Lưu thông tin khi nhấn OK
+              onBlur={() => {
+                updateOrderInfo
+              }} // Lưu thông tin khi mất bàn phím
+              style={[
+                styles.input,
+                activeInput === 'to' && {
+                  backgroundColor: '#FFFFFF',
+                  fontWeight: 'normal'
+                }
+              ]}
+              numberOfLines={1}
+            />
+          </View>
+
+          {/* Input "Giao đến đâu?" */}
+          <View
+            style={[
+              styles.searchInputGroup,
+              activeInput === 'from' && { backgroundColor: '#FFFFFF' }
+            ]}
+          >
+            <SvgIcon Icon={Round} size={12} color='#F75536' />
+            <TextInput
+              placeholder='Giao đến đâu?'
+              value={orderInfo.receiverIn4.address}
+              onFocus={() => {
+                handleInputFocus('to'), updateOrderInfo
+              }}
+              onChangeText={text => {
+                updateOrderInfo({
+                  receiverIn4: {
+                    ...orderInfo.receiverIn4,
+                    address: text
+                  }
+                })
+                setSearchQueryTo(text)
+              }}
+              onSubmitEditing={() => {
+                updateOrderInfo
+              }} // Lưu thông tin khi nhấn OK
+              onBlur={() => {
+                updateOrderInfo
+              }} // Lưu thông tin khi mất bàn phím
+              style={[
+                styles.input,
+                activeInput === 'from' && {
+                  backgroundColor: '#FFFFFF',
+                  fontWeight: 'normal'
+                }
+              ]}
+              numberOfLines={1}
+            />
+          </View>
         </View>
       </View>
+
       <ScrollView
         showsVerticalScrollIndicator={false} // Ẩn thanh cuộn dọc
         showsHorizontalScrollIndicator={false} // Ẩn thanh cuộn ngang (nếu có)
-        contentContainerStyle={[styles.scrollView, { width: screenWidth }]}
+        contentContainerStyle={[styles.scrollView]}
       >
         <View style={styles.theRest}>
           {/* Hiển thị kết quả tìm kiếm cho từng ô nhập */}
@@ -244,14 +341,6 @@ export default function AddressInputScreen () {
                   ))}
                 </>
               )}
-
-              {/* Nếu không có kết quả tìm kiếm nào */}
-              {filteredAddressesFrom.length === 0 &&
-                filteredAddressesTo.length === 0 && (
-                  <Text style={styles.noResultText}>
-                    Không tìm thấy kết quả
-                  </Text>
-                )}
             </>
           ) : (
             // Nếu không có chuỗi tìm kiếm, hiển thị các tab như bình thường
@@ -268,7 +357,6 @@ export default function AddressInputScreen () {
                   onPress={() => setActiveTab('saved')}
                 />
               </View>
-
               <View style={styles.tabContent}>
                 {activeTab === 'recently' &&
                   recentlyUsedAddresses.map((item, index) => (
@@ -292,7 +380,7 @@ export default function AddressInputScreen () {
         </View>
       </ScrollView>
       <TouchableOpacity style={styles.mapButton}>
-        <PngIcon name={AddressIcon} size={24} />
+        <SvgIcon Icon={Map} size={14} color='#202020' />
         <Text style={styles.mapButtonText}>Chọn từ bản đồ</Text>
       </TouchableOpacity>
     </SafeAreaView>
@@ -303,7 +391,8 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flex: 1,
-    backgroundColor: '#FFFFFD'
+    backgroundColor: '#FFFFFD',
+    paddingHorizontal: 16
   },
   scrollView: {
     display: 'flex',
@@ -312,60 +401,81 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFD',
     paddingBottom: 50
   },
+  topContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    backgroundColor: '#FFFFFD',
+    paddingTop: 16
+  },
+  backContainer: {
+    paddingVertical: 16,
+    paddingRight: 8
+  },
   searchbar: {
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'space-between',
-    padding: 8,
     marginTop: 8,
     backgroundColor: '#F5F5F5',
-    height: screenHeight * 0.9 * 0.2
+    height: screenHeight * 0.7 * 0.2,
+    flex: 1
   },
   searchInputGroup: {
     display: 'flex',
-    flex: 1,
     backgroundColor: '#E6E9E9',
     flexDirection: 'row',
     alignItems: 'center',
     margin: 4,
-    borderRadius: 4,
+    borderRadius: 8,
     paddingLeft: 8
   },
   input: {
     flex: 1,
     padding: 8,
     fontSize: 16,
-    borderRadius: 4
+    borderRadius: 8,
+    fontWeight: 'bold'
   },
   theRest: {
     display: 'flex',
-    backgroundColor: '#FFFFFD',
-    flex: 1,
-    paddingHorizontal: 8
+    flex: 1
   },
   tabMenu: {
     display: 'flex',
     flexDirection: 'row',
-    marginVertical: 16
+    marginVertical: 16,
+    justifyContent: 'space-between',
+    gap: 8
   },
   tabButton: {
-    flex: 1,
     paddingVertical: 10,
-    alignItems: 'center',
     backgroundColor: '#f0f0f0',
-    borderRadius: 5,
-    marginHorizontal: 5
+    borderRadius: 8,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    alignContent: 'center'
   },
   activeTabButton: {
-    backgroundColor: '#DCF5F2'
+    paddingVertical: 10,
+    borderRadius: 8,
+    backgroundColor: '#DCF5F2',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    alignContent: 'center'
   },
   tabButtonText: {
     fontSize: 16,
+    textAlign: 'center',
     color: '#333'
   },
   activeTabButtonText: {
     color: '#2A5958',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    fontSize: 16,
+    textAlign: 'center'
   },
   tabContent: {
     flex: 1,
@@ -388,7 +498,8 @@ const styles = StyleSheet.create({
   addressTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 4
+    marginBottom: 4,
+    color: '#202020'
   },
   addressDetail: {
     fontSize: 14,
@@ -408,8 +519,8 @@ const styles = StyleSheet.create({
   },
   mapButtonText: {
     fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 8
+    marginLeft: 8,
+    color: '#202020'
   },
   noResultText: {
     fontSize: 16,

@@ -3,6 +3,10 @@
   "compilerOptions": {
     "strict": true,
     "types": ["react-native-svg"],
+    "jsx": "react-jsx", 
+    "esModuleInterop": true,
+    "resolveJsonModule": true, // Thêm nếu bạn sử dụng file JSON
+    "noImplicitAny": true, // Kiểm tra biến không có kiểu dữ liệu
     "paths": {
       "@/*": [
         "./*"
@@ -15,5 +19,6 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "svg.d.ts"
-  ]
+, "context/**/*.ts",  // Bao gồm tất cả các file TypeScript trong thư mục context  
+]
 }

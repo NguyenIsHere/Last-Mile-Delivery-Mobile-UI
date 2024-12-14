@@ -14,7 +14,7 @@ import {
 
 import { useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import CheckBox from '@react-native-community/checkbox'
+import { useOrderContext } from '../context/orderContext'
 
 const map = require('../assets/images/map.jpg')
 
@@ -35,6 +35,7 @@ function SvgIcon ({
 
 export default function SenderInfoInputScreen () {
   const router = useRouter()
+
   const [senderInfo, setSenderInfo] = useState({
     address: '',
     houseNumber: '',
@@ -43,19 +44,24 @@ export default function SenderInfoInputScreen () {
     note: ''
   })
 
+  const { orderInfo, updateOrderInfo } = useOrderContext()
+
   const screenWidth = Dimensions.get('window').width
   const screenHeight = Dimensions.get('window').height
 
   const [isChecked, setIsChecked] = useState(false)
 
   // Hàm kiểm tra nếu tất cả các trường bắt buộc đã được điền
-  const isFormComplete = () => {
-    const { address, houseNumber, name, phone } = senderInfo
+  function isFormComplete (senderIn4: {
+    address: string
+    name: string
+    phone: string
+  }): boolean {
+    // Kiểm tra nếu mọi giá trị đều khác rỗng
     return (
-      address.trim() !== '' &&
-      houseNumber.trim() !== '' &&
-      name.trim() !== '' &&
-      phone.trim() !== ''
+      senderIn4.address.trim() !== '' &&
+      senderIn4.name.trim() !== '' &&
+      senderIn4.phone.trim() !== ''
     )
   }
 
@@ -89,21 +95,33 @@ export default function SenderInfoInputScreen () {
           <TextInput
             style={styles.input}
             placeholder='Nhập địa chỉ'
-            value={senderInfo.address}
-            onChangeText={address => setSenderInfo({ ...senderInfo, address })}
+            value={orderInfo.senderIn4.address}
+            onChangeText={address =>
+              updateOrderInfo({
+                senderIn4: {
+                  ...orderInfo.senderIn4,
+                  address: address
+                }
+              })
+            }
+            numberOfLines={1}
           />
         </View>
         <View style={styles.formGroup}>
-          <Text style={styles.labelText}>
-            Số tầng, số tòa nhà <Text style={{ color: '#DF7065' }}>*</Text>
-          </Text>
+          <Text style={styles.labelText}>Số tầng, số tòa nhà</Text>
           <TextInput
             style={styles.input}
             placeholder='Thêm số tầng hoặc số căn hộ'
-            value={senderInfo.houseNumber}
+            value={orderInfo.senderIn4.houseNumber}
             onChangeText={houseNumber =>
-              setSenderInfo({ ...senderInfo, houseNumber })
+              updateOrderInfo({
+                senderIn4: {
+                  ...orderInfo.senderIn4,
+                  houseNumber: houseNumber
+                }
+              })
             }
+            numberOfLines={1}
           />
           <Text style={styles.characterCountText}>0/120</Text>
         </View>
@@ -114,8 +132,16 @@ export default function SenderInfoInputScreen () {
           <TextInput
             style={styles.input}
             placeholder='Tên'
-            value={senderInfo.name}
-            onChangeText={name => setSenderInfo({ ...senderInfo, name })}
+            value={orderInfo.senderIn4.name}
+            onChangeText={name =>
+              updateOrderInfo({
+                senderIn4: {
+                  ...orderInfo.senderIn4,
+                  name: name
+                }
+              })
+            }
+            numberOfLines={1}
           />
         </View>
         <View style={styles.formGroup}>
@@ -125,8 +151,16 @@ export default function SenderInfoInputScreen () {
           <TextInput
             style={styles.input}
             placeholder='Số điện thoại'
-            value={senderInfo.phone}
-            onChangeText={phone => setSenderInfo({ ...senderInfo, phone })}
+            value={orderInfo.senderIn4.phone}
+            onChangeText={phone =>
+              updateOrderInfo({
+                senderIn4: {
+                  ...orderInfo.senderIn4,
+                  phone: phone
+                }
+              })
+            }
+            numberOfLines={1}
           />
         </View>
         <View style={styles.formGroup}>
@@ -134,8 +168,16 @@ export default function SenderInfoInputScreen () {
           <TextInput
             style={styles.input}
             placeholder='Ghi chú cho tài xế'
-            value={senderInfo.note}
-            onChangeText={note => setSenderInfo({ ...senderInfo, note })}
+            value={orderInfo.senderIn4.note}
+            onChangeText={address =>
+              updateOrderInfo({
+                senderIn4: {
+                  ...orderInfo.senderIn4,
+                  note: address
+                }
+              })
+            }
+            numberOfLines={1}
           />
           <Text style={styles.characterCountText}>0/120</Text>
         </View>
@@ -157,19 +199,19 @@ export default function SenderInfoInputScreen () {
       <TouchableOpacity
         style={[
           styles.submitButtonActive,
-          !isFormComplete() && styles.submitButton // Đổi màu nút khi không thể bấm
+          !isFormComplete(orderInfo.senderIn4) && styles.submitButton // Đổi màu nút khi không thể bấm
         ]}
         onPress={() => {
-          if (isFormComplete()) {
+          if (isFormComplete(orderInfo.senderIn4)) {
             router.push('/orderDetail')
           }
         }}
-        disabled={!isFormComplete()} // Vô hiệu hóa nút khi form chưa đầy đủ
+        disabled={!isFormComplete(orderInfo.senderIn4)} // Vô hiệu hóa nút khi form chưa đầy đủ
       >
         <Text
           style={[
             styles.submitButtonTextActive,
-            !isFormComplete() && styles.submitButtonText // Đổi màu nút khi không thể bấm
+            !isFormComplete(orderInfo.senderIn4) && styles.submitButtonText // Đổi màu nút khi không thể bấm
           ]}
         >
           Xác nhận
@@ -198,6 +240,7 @@ const styles = StyleSheet.create({
     elevation: 10
   },
   formGroup: {
+    marginTop: 16,
     marginBottom: 10
   },
   titleText: {

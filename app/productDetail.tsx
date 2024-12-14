@@ -13,14 +13,24 @@ import {
 } from 'react-native'
 import { useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { LinearGradient } from 'expo-linear-gradient'
+import { useOrderContext } from '../context/orderContext'
 
 const AddressIcon = require('../assets/pngicons/015-location.png')
 const BoxAddressIcon = require('../assets/pngicons/004-location-pin.png')
 
-const food = require('../assets/pngicons/013-on-time.png')
-const tshirt = require('../assets/pngicons/013-on-time.png')
-const phone = require('../assets/pngicons/013-on-time.png')
-const fragile = require('../assets/pngicons/013-on-time.png')
+import Svg from 'react-native-svg'
+
+import food from '../assets/icons/restaurant.svg'
+import tshirt from '../assets/icons/shirt-long-sleeve.svg'
+import fragile from '../assets/icons/wine-glass-crack.svg'
+import phone from '../assets/icons/mobile-notch.svg'
+import more from '../assets/icons/menu-dots.svg'
+
+// const tshirt = require('../assets/icons/shirt-long-sleeve.svg')
+// const fragile = require('../assets/icons/wine-glass-crack.svg')
+// const phone = require('../assets/icons/mobile-notch.svg')
+// const more = require('../assets/icons/menu-dots.svg')
 
 const grabman = require('../assets/images/grabmanwithpackage.png')
 
@@ -39,6 +49,33 @@ function PngIcon ({
   )
 }
 
+function SvgIcon ({
+  Icon,
+  size = 24,
+  color = '#000'
+}: {
+  Icon: React.FC<React.ComponentProps<typeof phone>>
+  size?: number
+  color?: string
+}) {
+  return <Icon width={size} height={size} fill={color} />
+}
+
+function isItemDetailsComplete (itemDetails: {
+  size: string
+  weight: string
+  type: string
+  insurance: string
+}): boolean {
+  // Kiểm tra nếu mọi giá trị đều khác rỗng
+  return (
+    itemDetails.size.trim() !== '' &&
+    itemDetails.weight.trim() !== '' &&
+    itemDetails.type.trim() !== '' &&
+    itemDetails.insurance.trim() !== ''
+  )
+}
+
 export default function productDetailInputScreen () {
   const [productDetail, setProductDetail] = useState({
     name: '',
@@ -47,49 +84,58 @@ export default function productDetailInputScreen () {
     description: ''
   })
 
-  const [selectedSize, setSelectedSize] = useState<string>('M')
+  const { orderInfo, updateOrderInfo } = useOrderContext()
+
+  const [selectedSize, setSelectedSize] = useState<string>(
+    orderInfo.itemDetails.size
+  )
   const sizes = ['S', 'M', 'L', 'XL']
 
   const types = [
     {
       name: 'Thực phẩm',
-      PngIcon: food
+      Icon: food
     },
     {
       name: 'Quần áo',
-      PngIcon: tshirt
+      Icon: tshirt
     },
     {
       name: 'Điện tử',
-      PngIcon: phone
+      Icon: phone
     },
     {
       name: 'Dễ vỡ',
-      PngIcon: fragile
+      Icon: fragile
     },
     {
       name: 'Khác',
-      PngIcon: food
+      Icon: more
     }
   ]
 
-  const [selectedType, setSelectedType] = useState<any>({
+  interface Type {
+    name: string
+    Icon: React.FC<React.ComponentProps<typeof food>>
+  }
+
+  const [selectedType, setSelectedType] = useState<Type>({
     name: 'Thực phẩm',
-    PngIcon: food
+    Icon: food
   })
 
   const insurances = [
     {
       name: 'Cơ bản',
-      price: 'mặc định'
+      price: '2.000'
     },
     {
       name: 'Tiêu chuẩn',
-      price: '4.000đ'
+      price: '4.000'
     },
     {
       name: 'Nâng cao',
-      price: '10.000đ'
+      price: '10.000'
     }
   ]
   const [selectedInsurance, setSelectedInsurance] = useState<any>({
@@ -123,7 +169,15 @@ export default function productDetailInputScreen () {
                     styles.button,
                     selectedSize === size && styles.selectedButton // Nếu được chọn, áp dụng style khác
                   ]}
-                  onPress={() => setSelectedSize(size)}
+                  onPress={() => {
+                    setSelectedSize(size),
+                      updateOrderInfo({
+                        itemDetails: {
+                          ...orderInfo.itemDetails,
+                          size: size
+                        }
+                      })
+                  }}
                 >
                   <Text
                     style={[
@@ -145,9 +199,11 @@ export default function productDetailInputScreen () {
             <View style={styles.weightInputGroup}>
               <TextInput
                 style={styles.input}
-                value={productDetail.description}
+                value={orderInfo.itemDetails.weight}
                 onChangeText={text =>
-                  setProductDetail({ ...productDetail, description: text })
+                  updateOrderInfo({
+                    itemDetails: { ...orderInfo.itemDetails, weight: text }
+                  })
                 }
               />
               <Text style={styles.kg}>Kg</Text>
@@ -171,22 +227,48 @@ export default function productDetailInputScreen () {
                 key={type.name}
                 style={[
                   styles.typeButton,
-                  selectedType === type.name && styles.selectedTypeButton // Nếu được chọn, áp dụng style khác
+                  selectedType.name === type.name && styles.selectedTypeButton // Nếu được chọn, áp dụng style khác
                 ]}
-                onPress={() => setSelectedType(type.name)}
+                onPress={() => {
+                  setSelectedType(type),
+                    updateOrderInfo({
+                      itemDetails: {
+                        ...orderInfo.itemDetails,
+                        type: type.name
+                      }
+                    })
+                }}
               >
                 <Text
                   style={[
                     styles.buttonText,
-                    selectedType === type.name && styles.selectedButtonText // Nếu được chọn, đổi màu chữ
+                    selectedType.name === type.name && styles.selectedButtonText // Nếu được chọn, đổi màu chữ
                   ]}
                 >
                   {type.name}
                 </Text>
-                <PngIcon name={type.PngIcon} size={24} />
+                <SvgIcon
+                  Icon={type.Icon}
+                  size={24}
+                  color={
+                    selectedType.name === type.name ? '#FFFFFF' : '#2A5958'
+                  }
+                />
               </TouchableOpacity>
             ))}
           </ScrollView>
+          <LinearGradient
+            colors={['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0)']}
+            start={{ x: 1, y: 0 }}
+            end={{ x: 0, y: 0 }}
+            style={{
+              flex: 1,
+              position: 'absolute',
+              width: 16,
+              height: '100%',
+              right: 0
+            }}
+          />
         </View>
         <View style={styles.insuranceGroup}>
           <Text style={styles.title}>Đảm bảo hàng hóa</Text>
@@ -199,7 +281,15 @@ export default function productDetailInputScreen () {
                   selectedInsurance === insurance.name &&
                     styles.selectedInsuranceButton // Nếu được chọn, áp dụng style khác
                 ]}
-                onPress={() => setSelectedInsurance(insurance.name)}
+                onPress={() => {
+                  setSelectedInsurance(insurance.name),
+                    updateOrderInfo({
+                      itemDetails: {
+                        ...orderInfo.itemDetails,
+                        insurance: insurance.name
+                      }
+                    })
+                }}
               >
                 <Text
                   style={[
@@ -218,6 +308,7 @@ export default function productDetailInputScreen () {
                   ]}
                 >
                   {insurance.price}
+                  <Text style={{ textDecorationLine: 'underline' }}>đ</Text>
                 </Text>
               </TouchableOpacity>
             ))}
@@ -226,10 +317,22 @@ export default function productDetailInputScreen () {
       </ScrollView>
       <View style={styles.submitButtonContainer}>
         <TouchableOpacity
-          style={styles.submitButton}
-          // onPress={() => router.push('/addressInput')}
+          style={
+            isItemDetailsComplete(orderInfo.itemDetails)
+              ? styles.submitButtonActive
+              : styles.submitButton
+          }
+          onPress={() => [updateOrderInfo, router.back()]}
         >
-          <Text style={styles.submitButtonText}>Xác nhận</Text>
+          <Text
+            style={
+              isItemDetailsComplete(orderInfo.itemDetails)
+                ? styles.submitButtonTextActive
+                : styles.submitButtonText
+            }
+          >
+            Xác nhận
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -427,9 +530,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   submitButtonActive: {
-    backgroundColor: '#2A5958'
+    backgroundColor: '#2A5958',
+    display: 'flex',
+    width: screenWidth - 32,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 25,
+    padding: 16
   },
   submitButtonTextActive: {
-    color: '#FFFFFF'
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: 'bold'
   }
 })

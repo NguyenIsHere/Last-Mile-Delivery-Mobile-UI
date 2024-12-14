@@ -14,23 +14,26 @@ import {
 
 import { useRouter } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient'
+import { useOrderContext } from '../context/orderContext'
 
-const PackageIcon = require('../assets/pngicons/013-on-time.png')
-const PlaneIcon = require('../assets/pngicons/009-cargo-plane.png')
-const SearchPackageIcon = require('../assets/pngicons/005-tracking.png')
-const PostOfficeIcon = require('../assets/pngicons/018-map.png')
-const DollarIcon = require('../assets/pngicons/011-tracking-1.png')
-const GuideIcon = require('../assets/pngicons/024-book-1.png')
+const MotorIcon = require('../assets/pngicons/002-delivery-bike.png')
+const TruckIcon = require('../assets/pngicons/001-delivery-truck.png')
+const VanIcon = require('../assets/pngicons/003-van.png')
+
+const HeartBoxIcon = require('../assets/pngicons/004-box.png')
+const CheckBoxIcon = require('../assets/pngicons/005-box-1.png')
+const LikeBoxIcon = require('../assets/pngicons/006-box-2.png')
+const StarBoxIcon = require('../assets/pngicons/007-box-3.png')
 
 import SearchIcon from '../assets/icons/search.svg'
 import CouponIcon from '../assets/icons/ticket.svg'
 import BellIcon from '../assets/icons/bell.svg'
 
-const AddressIcon = require('../assets/pngicons/015-location.png')
-const BoxAddressIcon = require('../assets/pngicons/004-location-pin.png')
+import Round from '../assets/icons/dot-circle.svg'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 const avatar = require('../assets/images/Mei.png')
-const banner = require('../assets/images/banner.jpg')
+const banner = require('../assets/images/banner3.png')
 
 const screenWidth = Dimensions.get('window').width
 
@@ -43,38 +46,6 @@ function PngIcon ({
 }) {
   return (
     <Image source={name} style={{ width: size, height: size, marginTop: 3 }} />
-  )
-}
-
-function ButtonIcon ({
-  name,
-  label
-}: {
-  name: ImageSourcePropType
-  label: string
-}) {
-  return (
-    <TouchableOpacity style={styles.button}>
-      <PngIcon name={name} size={32} />
-      <Text style={styles.buttonText}>{label}</Text>
-    </TouchableOpacity>
-  )
-}
-
-function ButtonIcon2 ({
-  name,
-  label,
-  onPress
-}: {
-  name: ImageSourcePropType
-  label: string
-  onPress?: () => void // Thêm hàm onPress (optional)
-}) {
-  return (
-    <TouchableOpacity style={styles.button2} onPress={onPress}>
-      <PngIcon name={name} size={24} />
-      <Text style={styles.buttonText2}>{label}</Text>
-    </TouchableOpacity>
   )
 }
 
@@ -114,139 +85,219 @@ export default function FullWidthScrollView () {
   const [deliveryOption, setDeliveryOption] = useState('')
   const [vehicleOption, setVehicleOption] = useState('')
 
+  const { orderInfo, updateOrderInfo } = useOrderContext()
+
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false} // Ẩn thanh cuộn dọc
-      showsHorizontalScrollIndicator={false} // Ẩn thanh cuộn ngang (nếu có)
-      contentContainerStyle={[styles.container, { width: screenWidth }]}
-    >
-      {/* Background */}
-      <LinearGradient
-        colors={['#CE012C', '#F00132']}
-        style={styles.header}
-      ></LinearGradient>
-      {/* Header */}
-      <View style={styles.headerContainer}>
-        <View style={styles.headerLeft}>
-          <Image source={avatar} style={styles.image} />
-          <View>
-            <Text style={styles.headerText}>Trần Khôi Nguyên</Text>
-            <Text style={styles.headerText}>Liên kết Viettel++</Text>
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        showsVerticalScrollIndicator={false} // Ẩn thanh cuộn dọc
+        showsHorizontalScrollIndicator={false} // Ẩn thanh cuộn ngang (nếu có)
+        contentContainerStyle={[styles.scrollView]}
+      >
+        {/* Background */}
+        <View style={styles.header}></View>
+        {/* Header */}
+        <View style={styles.headerContainer}>
+          <View style={styles.headerLeft}>
+            <Image source={avatar} style={styles.image} />
+            <View>
+              <Text style={styles.headerText}>Trần Khôi Nguyên</Text>
+              <Text style={styles.headerText}>Liên kết Viettel++</Text>
+            </View>
           </View>
-        </View>
-        <View style={styles.headerRight}>
-          <TouchableOpacity>
-            <SvgIcon Icon={SearchIcon} size={20} color='#FDFDFF' />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push('/orderDetail')}>
-            <SvgIcon Icon={CouponIcon} size={20} color='#FDFDFF' />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <SvgIcon Icon={BellIcon} size={20} color='#FDFDFF' />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {/* Địa chỉ */}
-      <View style={styles.addressContainer}>
-        <ButtonIcon2
-          name={AddressIcon}
-          label='Địa chỉ gửi hàng'
-          onPress={() => router.push('/addressInput')} // Điều hướng đến đường dẫn
-        />
-        <ButtonIcon2
-          name={BoxAddressIcon}
-          label='Bạn muốn gửi hàng tới?'
-          onPress={() => router.push('/addressInput')} // Điều hướng tương tự
-        />
-      </View>
-
-      {/* Nút chia thành hai hàng */}
-      {/* <View style={styles.buttonsContainer}>
-        <ButtonIcon name={PackageIcon} label='Tạo đơn giao ngay' />
-        <ButtonIcon name={PlaneIcon} label='Tạo đơn quốc tế' />
-        <ButtonIcon name={SearchPackageIcon} label='Tra cứu đơn hàng' />
-        <ButtonIcon name={PackageIcon} label='Trò chơi giải trí' />
-        <ButtonIcon name={PostOfficeIcon} label='Tìm kiếm bưu cục' />
-        <ButtonIcon name={DollarIcon} label='Tra tính cước phí' />
-        <ButtonIcon name={GuideIcon} label='Hướng dẫn sử dụng' />
-        <ButtonIcon name={PackageIcon} label='Thống kê chi phí' />
-      </View> */}
-
-      {/* Đơn hàng đã lưu */}
-      <View style={styles.savedOrderGroup}>
-        <Text style={styles.titleText}>Đơn hàng đã lưu</Text>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false} // Ẩn thanh cuộn ngang (nếu có)
-          style={styles.savedOrderHorizontalList}
-        >
-          <View style={styles.orderListContainer}>
-            <TouchableOpacity style={styles.savedOrderItem}>
-              <View style={styles.orderContent}>
-                <PngIcon name={PackageIcon} size={24} />
-                <Text style={styles.boldText}>Nguyễn Văn A</Text>
-                <Text style={styles.normalText}>56/34 Hai Ba Trung St.</Text>
-              </View>
-              <View style={styles.dots}>
-                <Text style={styles.dot}>•</Text>
-                <Text style={styles.dot}>•</Text>
-              </View>
-              <View style={styles.orderContent}>
-                <PngIcon name={PackageIcon} size={24} />
-                <Text style={styles.boldText}>Trần Văn B</Text>
-                <Text style={styles.normalText}>Di An High School</Text>
-              </View>
-              <View style={styles.orderService}>
-                <PngIcon name={PackageIcon} size={24} />
-                <Text style={styles.blackText}>Instant</Text>
-                <PngIcon name={PackageIcon} size={24} />
-                <Text style={styles.blackText}>S • 1kg</Text>
-              </View>
+          <View style={styles.headerRight}>
+            <TouchableOpacity>
+              <SvgIcon Icon={SearchIcon} size={20} color='#FDFDFF' />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.savedOrderItem}>
-              <View style={styles.orderContent}>
-                <PngIcon name={PackageIcon} size={24} />
-                <Text style={styles.boldText}>Nguyễn Văn A</Text>
-                <Text style={styles.normalText}>56/34 Hai Ba Trung St.</Text>
-              </View>
-              <View style={styles.dots}>
-                <Text style={styles.dot}>•</Text>
-                <Text style={styles.dot}>•</Text>
-              </View>
-              <View style={styles.orderContent}>
-                <PngIcon name={PackageIcon} size={24} />
-                <Text style={styles.boldText}>Trần Văn B</Text>
-                <Text style={styles.normalText}>Di An High School</Text>
-              </View>
-              <View style={styles.orderService}>
-                <PngIcon name={PackageIcon} size={24} />
-                <Text style={styles.blackText}>Instant</Text>
-                <PngIcon name={PackageIcon} size={24} />
-                <Text style={styles.blackText}>S • 1kg</Text>
-              </View>
+            <TouchableOpacity onPress={() => router.push('/orderDetail')}>
+              <SvgIcon Icon={CouponIcon} size={20} color='#FDFDFF' />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <SvgIcon Icon={BellIcon} size={20} color='#FDFDFF' />
             </TouchableOpacity>
           </View>
-        </ScrollView>
-      </View>
+        </View>
 
-      {/* Banner quảng cáo */}
-      <Text style={styles.titleText}>Khám phá ưu đãi ngay</Text>
-      <View>
-        <Image source={banner} style={styles.banner} />
-      </View>
+        {/* Địa chỉ */}
+        <View style={styles.addressContainer}>
+          <View style={{ marginBottom: 10 }}>
+            <TouchableOpacity
+              style={styles.orderContent}
+              onPress={() => router.push('/addressInput')}
+            >
+              <SvgIcon Icon={Round} size={12} color='#3282B9' />
+              <Text
+                style={[
+                  orderInfo.senderIn4.address
+                    ? { color: '#202020' }
+                    : { color: '#727272' }
+                ]}
+                numberOfLines={1}
+                ellipsizeMode='tail' // tail | middle | head | clip
+              >
+                {orderInfo.senderIn4.address || 'Lấy hàng ở đâu?'}
+              </Text>
+              <LinearGradient
+                colors={['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0)']}
+                start={{ x: 1, y: 0 }}
+                end={{ x: 0, y: 0 }}
+                style={{
+                  flex: 1,
+                  position: 'absolute',
+                  width: 16,
+                  height: '100%',
+                  right: 0
+                }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.orderContent}
+              onPress={() => router.push('/addressInput')}
+            >
+              <View style={styles.dots}>
+                <View style={styles.dot}></View>
+                <View style={styles.dot}></View>
+                <View style={styles.dot}></View>
+                <View style={styles.dot}></View>
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.orderContent, { marginBottom: -8 }]}
+              onPress={() => router.push('/addressInput')}
+            >
+              <SvgIcon Icon={Round} size={12} color='#F75536' />
+              <Text
+                style={[
+                  orderInfo.receiverIn4.address
+                    ? { color: '#202020' }
+                    : { color: '#727272' }
+                ]}
+                numberOfLines={1}
+                ellipsizeMode='tail' // tail | middle | head | clip
+              >
+                {orderInfo.receiverIn4.address || 'Giao đến đâu?'}
+              </Text>
+              <LinearGradient
+                colors={['rgba(255, 255, 255, 1)', 'rgba(255, 255, 255, 0)']}
+                start={{ x: 1, y: 0 }}
+                end={{ x: 0, y: 0 }}
+                style={{
+                  flex: 1,
+                  position: 'absolute',
+                  width: 16,
+                  height: '100%',
+                  right: 0
+                }}
+              />
+            </TouchableOpacity>
+            {orderInfo.receiverIn4.address && (
+              <TouchableOpacity
+                style={[styles.orderContent, { marginBottom: -10 }]}
+                onPress={() => router.push('/addressInput')}
+              >
+                <View style={styles.dots}></View>
+                <Text
+                  style={{
+                    fontWeight: '500',
+                    color: '#1B6DC5',
+                    marginTop: 16
+                  }}
+                >
+                  + Thêm điểm giao
+                </Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
 
-      <Text style={styles.titleText}>Tin tức và khám phá</Text>
-      {/* Banner quảng cáo */}
-      <View>
-        <Image source={banner} style={styles.banner} />
-      </View>
-    </ScrollView>
+        {/* Đơn hàng đã lưu */}
+        <View style={styles.savedOrderGroup}>
+          <Text style={styles.titleText}>Đơn hàng đã lưu</Text>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false} // Ẩn thanh cuộn ngang (nếu có)
+            style={styles.savedOrderHorizontalList}
+          >
+            <View style={styles.orderListContainer}>
+              <TouchableOpacity
+                style={styles.savedOrderItem}
+                onPress={() => router.push('/orderDetail')}
+              >
+                <View style={styles.orderContent}>
+                  <SvgIcon Icon={Round} size={12} color='#F75536' />
+                  <Text style={styles.boldText}>Nguyễn Văn A</Text>
+                  <Text style={styles.normalText}>56/34 Hai Ba Trung St.</Text>
+                </View>
+                <View style={styles.dots2}>
+                  <View style={styles.dot}></View>
+                  <View style={styles.dot}></View>
+                </View>
+                <View style={styles.orderContent}>
+                  <SvgIcon Icon={Round} size={12} color='#3282B9' />
+                  <Text style={styles.boldText}>Trần Văn B</Text>
+                  <Text style={styles.normalText}>Di An High School</Text>
+                </View>
+                <View style={styles.orderService}>
+                  <PngIcon name={MotorIcon} size={24} />
+                  <Text style={styles.blackText}>Instant</Text>
+                  <PngIcon name={HeartBoxIcon} size={24} />
+                  <Text style={styles.blackText}>S • 1kg</Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                style={styles.savedOrderItem}
+                onPress={() => router.push('/orderDetail')}
+              >
+                <View style={styles.orderContent}>
+                  <SvgIcon Icon={Round} size={12} color='#F75536' />
+                  <Text style={styles.boldText}>Nguyễn Văn A</Text>
+                  <Text style={styles.normalText}>56/34 Hai Ba Trung St.</Text>
+                </View>
+                <View style={styles.dots2}>
+                  <View style={styles.dot}></View>
+                  <View style={styles.dot}></View>
+                </View>
+                <View style={styles.orderContent}>
+                  <SvgIcon Icon={Round} size={12} color='#3282B9' />
+                  <Text style={styles.boldText}>Trần Văn B</Text>
+                  <Text style={styles.normalText}>Di An High School</Text>
+                </View>
+                <View style={styles.orderService}>
+                  <PngIcon name={CheckBoxIcon} size={24} />
+                  <Text style={styles.blackText}>Instant</Text>
+                  <PngIcon name={TruckIcon} size={24} />
+                  <Text style={styles.blackText}>S • 1kg</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </ScrollView>
+        </View>
+
+        {/* Banner quảng cáo */}
+        <Text style={styles.titleText}>Khám phá ưu đãi ngay</Text>
+        <View>
+          <Image source={banner} style={styles.banner} resizeMode='cover' />
+        </View>
+
+        <Text style={styles.titleText}>Tin tức và khám phá</Text>
+        {/* Banner quảng cáo */}
+        <View>
+          <Image source={banner} style={styles.banner} />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    display: 'flex',
+    flex: 1,
+    backgroundColor: '#FFFFFD'
+  },
+
+  scrollView: {
     display: 'flex',
     flexGrow: 1,
     overflow: 'hidden',
@@ -265,7 +316,8 @@ const styles = StyleSheet.create({
     height: 140,
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 20
+    padding: 20,
+    backgroundColor: '#3DB95B'
   },
   headerContainer: {
     display: 'flex',
@@ -299,9 +351,9 @@ const styles = StyleSheet.create({
     borderRadius: 50
   },
   banner: {
-    width: '100%',
-    height: 150,
-    borderRadius: 15
+    height: 140,
+    borderRadius: 15,
+    width: '100%'
   },
   buttonsContainer: {
     flexDirection: 'row',
@@ -329,8 +381,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     backgroundColor: '#FDFDFF',
     elevation: 5,
-    borderRadius: 10,
-    padding: 10
+    borderRadius: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 16
   },
   button2: {
     display: 'flex',
@@ -450,32 +503,42 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
     marginTop: 5,
-    borderWidth: 1.5,
-    borderColor: 'gray',
+    borderWidth: 1,
+    borderColor: '#727272',
     width: screenWidth - 32
   },
   orderContent: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10
+    gap: 10,
+    overflow: 'hidden',
+    paddingHorizontal: 4
   },
   boldText: {
     fontWeight: 'bold'
   },
   normalText: {
-    color: 'gray'
+    color: '#727272'
   },
   dots: {
     justifyContent: 'space-between',
-    height: 12, // Chiều cao tổng cộng của chuỗi dấu chấm
-    marginLeft: 12
+    alignItems: 'center',
+    width: 12,
+    gap: 4
   },
   dot: {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
+    width: 3,
+    height: 3,
+    borderRadius: 1.5,
     backgroundColor: '#ccc'
+  },
+  dots2: {
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: 12,
+    gap: 4,
+    margin: 4
   },
   orderService: {
     display: 'flex',

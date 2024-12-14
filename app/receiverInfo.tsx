@@ -14,7 +14,7 @@ import {
 
 import { useRouter } from 'expo-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import CheckBox from '@react-native-community/checkbox'
+import { useOrderContext } from '../context/orderContext'
 
 const map = require('../assets/images/map.jpg')
 
@@ -33,9 +33,10 @@ function SvgIcon ({
   return <Icon width={size} height={size} fill={color} />
 }
 
-export default function ReceiverInfoInputScreen () {
+export default function receiverInfoInputScreen () {
   const router = useRouter()
-  const [ReceiverInfo, setReceiverInfo] = useState({
+
+  const [receiverInfo, setreceiverInfo] = useState({
     address: '',
     houseNumber: '',
     name: '',
@@ -43,19 +44,24 @@ export default function ReceiverInfoInputScreen () {
     note: ''
   })
 
+  const { orderInfo, updateOrderInfo } = useOrderContext()
+
   const screenWidth = Dimensions.get('window').width
   const screenHeight = Dimensions.get('window').height
 
   const [isChecked, setIsChecked] = useState(false)
 
   // Hàm kiểm tra nếu tất cả các trường bắt buộc đã được điền
-  const isFormComplete = () => {
-    const { address, houseNumber, name, phone } = ReceiverInfo
+  function isFormComplete (receiverIn4: {
+    address: string
+    name: string
+    phone: string
+  }): boolean {
+    // Kiểm tra nếu mọi giá trị đều khác rỗng
     return (
-      address.trim() !== '' &&
-      houseNumber.trim() !== '' &&
-      name.trim() !== '' &&
-      phone.trim() !== ''
+      receiverIn4.address.trim() !== '' &&
+      receiverIn4.name.trim() !== '' &&
+      receiverIn4.phone.trim() !== ''
     )
   }
 
@@ -89,23 +95,33 @@ export default function ReceiverInfoInputScreen () {
           <TextInput
             style={styles.input}
             placeholder='Nhập địa chỉ'
-            value={ReceiverInfo.address}
+            value={orderInfo.receiverIn4.address}
             onChangeText={address =>
-              setReceiverInfo({ ...ReceiverInfo, address })
+              updateOrderInfo({
+                receiverIn4: {
+                  ...orderInfo.receiverIn4,
+                  address: address
+                }
+              })
             }
+            numberOfLines={1}
           />
         </View>
         <View style={styles.formGroup}>
-          <Text style={styles.labelText}>
-            Số tầng, số tòa nhà <Text style={{ color: '#DF7065' }}>*</Text>
-          </Text>
+          <Text style={styles.labelText}>Số tầng, số tòa nhà</Text>
           <TextInput
             style={styles.input}
             placeholder='Thêm số tầng hoặc số căn hộ'
-            value={ReceiverInfo.houseNumber}
+            value={orderInfo.receiverIn4.houseNumber}
             onChangeText={houseNumber =>
-              setReceiverInfo({ ...ReceiverInfo, houseNumber })
+              updateOrderInfo({
+                receiverIn4: {
+                  ...orderInfo.receiverIn4,
+                  houseNumber: houseNumber
+                }
+              })
             }
+            numberOfLines={1}
           />
           <Text style={styles.characterCountText}>0/120</Text>
         </View>
@@ -116,8 +132,16 @@ export default function ReceiverInfoInputScreen () {
           <TextInput
             style={styles.input}
             placeholder='Tên'
-            value={ReceiverInfo.name}
-            onChangeText={name => setReceiverInfo({ ...ReceiverInfo, name })}
+            value={orderInfo.receiverIn4.name}
+            onChangeText={name =>
+              updateOrderInfo({
+                receiverIn4: {
+                  ...orderInfo.receiverIn4,
+                  name: name
+                }
+              })
+            }
+            numberOfLines={1}
           />
         </View>
         <View style={styles.formGroup}>
@@ -127,8 +151,16 @@ export default function ReceiverInfoInputScreen () {
           <TextInput
             style={styles.input}
             placeholder='Số điện thoại'
-            value={ReceiverInfo.phone}
-            onChangeText={phone => setReceiverInfo({ ...ReceiverInfo, phone })}
+            value={orderInfo.receiverIn4.phone}
+            onChangeText={phone =>
+              updateOrderInfo({
+                receiverIn4: {
+                  ...orderInfo.receiverIn4,
+                  phone: phone
+                }
+              })
+            }
+            numberOfLines={1}
           />
         </View>
         <View style={styles.formGroup}>
@@ -136,8 +168,16 @@ export default function ReceiverInfoInputScreen () {
           <TextInput
             style={styles.input}
             placeholder='Ghi chú cho tài xế'
-            value={ReceiverInfo.note}
-            onChangeText={note => setReceiverInfo({ ...ReceiverInfo, note })}
+            value={orderInfo.receiverIn4.note}
+            onChangeText={address =>
+              updateOrderInfo({
+                receiverIn4: {
+                  ...orderInfo.receiverIn4,
+                  note: address
+                }
+              })
+            }
+            numberOfLines={1}
           />
           <Text style={styles.characterCountText}>0/120</Text>
         </View>
@@ -159,19 +199,19 @@ export default function ReceiverInfoInputScreen () {
       <TouchableOpacity
         style={[
           styles.submitButtonActive,
-          !isFormComplete() && styles.submitButton // Đổi màu nút khi không thể bấm
+          !isFormComplete(orderInfo.receiverIn4) && styles.submitButton // Đổi màu nút khi không thể bấm
         ]}
         onPress={() => {
-          if (isFormComplete()) {
+          if (isFormComplete(orderInfo.receiverIn4)) {
             router.push('/orderDetail')
           }
         }}
-        disabled={!isFormComplete()} // Vô hiệu hóa nút khi form chưa đầy đủ
+        disabled={!isFormComplete(orderInfo.receiverIn4)} // Vô hiệu hóa nút khi form chưa đầy đủ
       >
         <Text
           style={[
             styles.submitButtonTextActive,
-            !isFormComplete() && styles.submitButtonText // Đổi màu nút khi không thể bấm
+            !isFormComplete(orderInfo.receiverIn4) && styles.submitButtonText // Đổi màu nút khi không thể bấm
           ]}
         >
           Xác nhận
@@ -200,6 +240,7 @@ const styles = StyleSheet.create({
     elevation: 10
   },
   formGroup: {
+    marginTop: 16,
     marginBottom: 10
   },
   titleText: {
