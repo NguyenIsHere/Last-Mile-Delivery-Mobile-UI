@@ -32,11 +32,12 @@ const DetailBoxIcon = require('../assets/pngicons/012-weight-scale.png')
 const VoucherIcon = require('../assets/pngicons/019-pennant.png')
 
 const MapBG = require('../assets/images/BigMap.png')
-const DrivingGif = require('../assets/images/driving.gif')
+const Driving = require('../assets/images/delivery-man.jpg')
 
 import BookmarkIcon from '../assets/icons/bookmark.svg'
 import LeftArrow from '../assets/icons/angle-small-left.svg'
 import RightArrow from '../assets/icons/angle-small-right.svg'
+import DownArrow from '../assets/icons/angle-down.svg'
 import Round from '../assets/icons/dot-circle (1).svg'
 import Destination from '../assets/icons/marker copy.svg'
 import Plus from '../assets/icons/plus.svg'
@@ -93,41 +94,38 @@ export default function Map () {
   const router = useRouter() // Dùng `useRouter` cho điều hướng
   const { orderInfo, updateOrderInfo } = useOrderContext()
 
-  const slideAnim = useRef(new Animated.Value(screenHeight - 200)).current // Vị trí ban đầu của menu
+  const [currentSlideValue, setCurrentSlideValue] = useState(screenHeight - 240)
 
-  const slideValueRef = useRef(screenHeight - 200) // Lưu giá trị hiện tại của slideAnim
+  const initialHeight = screenHeight - 240 // Chiều cao ban đầu
+  const expandedHeight = 60 // Chiều cao mở rộng
+
+  const slideAnim = useRef(new Animated.Value(initialHeight)).current // Vị trí ban đầu
+  const slideValueRef = useRef(initialHeight) // Lưu giá trị hiện tại
+
   useEffect(() => {
     const listener = slideAnim.addListener(({ value }) => {
-      setCurrentSlideValue(value) // Cập nhật state
+      setCurrentSlideValue(value)
       slideValueRef.current = value // Cập nhật giá trị tạm ngay lập tức
     })
 
     return () => {
-      slideAnim.removeListener(listener) // Xóa listener khi component unmount
+      slideAnim.removeListener(listener)
     }
   }, [slideAnim])
 
-  const [currentSlideValue, setCurrentSlideValue] = useState(screenHeight - 200)
-
-  // PanResponder để kéo menu
   const panResponder = useRef(
     PanResponder.create({
-      onMoveShouldSetPanResponder: (_, gestureState) => gestureState.dy < 0, // Chỉ cho phép kéo lên (dy < 0)
-
+      onMoveShouldSetPanResponder: (_, gestureState) => gestureState.dy < 0, // Chỉ cho phép kéo lên
       onPanResponderMove: (_, gestureState) => {
         const newPosition = Math.max(
-          screenHeight - 400,
-          Math.min(screenHeight - 100, slideValueRef.current + gestureState.dy)
+          expandedHeight,
+          Math.min(initialHeight, slideValueRef.current + gestureState.dy)
         )
-        slideAnim.setValue(newPosition) // Cập nhật vị trí trực tiếp
+        slideAnim.setValue(newPosition)
       },
-
       onPanResponderRelease: (_, gestureState) => {
         const isDraggingDown = gestureState.dy > 50
-
-        const toValue = isDraggingDown
-          ? screenHeight - 200 // Không cho phép kéo xuống
-          : 100 // Chỉ cho phép mở rộng
+        const toValue = isDraggingDown ? initialHeight : expandedHeight
 
         Animated.spring(slideAnim, {
           toValue,
@@ -157,40 +155,43 @@ export default function Map () {
         <TouchableOpacity
           onPress={() =>
             Animated.spring(slideAnim, {
-              toValue: slideValueRef.current === 100 ? screenHeight - 200 : 100, // Toggle
+              toValue:
+                slideValueRef.current === expandedHeight
+                  ? initialHeight
+                  : expandedHeight,
               useNativeDriver: false
             }).start(() => {
               setCurrentSlideValue(
-                slideValueRef.current === 100 ? screenHeight - 200 : 100
+                slideValueRef.current === expandedHeight
+                  ? initialHeight
+                  : expandedHeight
               )
             })
           }
         >
-          <Text style={styles.toggleButton}>
-            {slideValueRef.current === 100 ? (
-              <View style={{ transform: [{ rotate: '90deg' }] }}>
-                <SvgIcon Icon={RightArrow} size={20} />
-              </View>
+          <View style={styles.toggleButton}>
+            {slideValueRef.current === expandedHeight ? (
+              <SvgIcon Icon={DownArrow} size={20} />
             ) : (
               <View style={styles.handle} />
             )}
-          </Text>
+          </View>
         </TouchableOpacity>
         <View style={styles.menuContent}>
           <View style={styles.deliveryState}>
-            <View style={styles.deliveryTopState}>
+            <View style={[styles.deliveryTopState]}>
               <View style={styles.textContainer}>
                 <Text style={styles.text}>11:18 PM</Text>
                 <Text style={styles.subText}>Đang giao hàng</Text>
               </View>
               <Image
-                source={DrivingGif}
+                source={Driving}
                 style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
+                  width: 80,
+                  height: 80,
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
+                  marginRight: -20
                 }}
                 resizeMode='center'
               ></Image>
@@ -218,11 +219,10 @@ export default function Map () {
           <View style={styles.driverInfo}>
             <View style={styles.driver}>
               <Image
-                source={DrivingGif}
+                source={Driving}
                 style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 30,
+                  width: 80,
+                  height: 80,
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}
@@ -262,11 +262,7 @@ export default function Map () {
               >
                 <SvgIcon Icon={Round} size={12} Color={color.blueColor100} />
                 <Text
-                  style={
-                    orderInfo.senderIn4.address
-                      ? { fontWeight: 'bold', color: color.fontColor100 }
-                      : { color: '#6B6B6B' }
-                  }
+                  style={{ fontWeight: 'bold', color: color.fontColor100 }}
                   numberOfLines={1}
                 >
                   {orderInfo.senderIn4.address || 'Lấy hàng ở đâu?'}
@@ -286,13 +282,12 @@ export default function Map () {
                 <Text
                   style={{
                     color: color.fontColor60,
-                    marginBottom: 10
+                    marginBottom: 10,
+                    paddingRight: 20
                   }}
                   numberOfLines={2}
                 >
-                  Thêm thông tin người gửi Thêm thông tin người gửi Thêm thông
-                  tin người gửi Thêm thông tin người gửi Thêm thông tin người
-                  gửi Thêm thông tin người gửi
+                  Cách Mạng Tháng 8, P.10, Q.3, Hồ Chí Minh, 70000, Vietnam
                 </Text>
               </TouchableOpacity>
 
@@ -326,13 +321,13 @@ export default function Map () {
                 <Text
                   style={{
                     color: color.fontColor60,
-                    marginBottom: 10
+                    marginBottom: 10,
+                    paddingRight: 20
                   }}
                   numberOfLines={2}
                 >
-                  Thêm thông tin người nhận Thêm thông tin người nhận Thêm thông
-                  tin người nhận Thêm thông tin người nhận Thêm thông tin người
-                  nhận
+                  Nguyễn Trãi, P.Nguyễn Cư Trinh, Q.1, Hồ Chí Minh, 70000,
+                  Vietnam
                 </Text>
               </TouchableOpacity>
               <View
@@ -396,28 +391,18 @@ const styles = StyleSheet.create({
   menuContainer: {
     position: 'absolute',
     width: screenWidth,
-    height: screenHeight - 100, // Chiều cao tối đa của menu
+    height: screenHeight - 50, // Chiều cao tối đa của menu
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
     elevation: 5
   },
-  handle: {
-    width: 60,
-    height: 5,
-    backgroundColor: color.fontColor30,
-    borderRadius: 3,
-    alignSelf: 'center',
-    marginTop: 10
-  },
+
   menuContent: {
     flex: 1,
     alignItems: 'center',
-    padding: 20
+    paddingHorizontal: 20,
+    paddingBottom: 20
   },
 
   deliveryState: {
@@ -508,7 +493,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 10,
     overflow: 'hidden',
-    marginBottom: 4
+    marginBottom: 4,
+    boxSizing: 'border-box'
     // backgroundColor: color.whiteColor50
   },
   dots: {
@@ -532,9 +518,19 @@ const styles = StyleSheet.create({
     padding: 20
   },
   toggleButton: {
-    fontSize: 16,
-    color: '#03B151',
+    width: '100%',
+    display: 'flex',
     textAlign: 'center',
-    marginTop: 10
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    height: 20
+  },
+  handle: {
+    width: 60,
+    height: 5,
+    backgroundColor: color.fontColor30,
+    borderRadius: 3,
+    alignSelf: 'center'
   }
 })

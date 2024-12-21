@@ -16,14 +16,13 @@ import { useRouter } from 'expo-router'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useOrderContext } from '../context/orderContext'
 
-const MotorIcon = require('../assets/pngicons/002-delivery-bike.png')
-const TruckIcon = require('../assets/pngicons/001-delivery-truck.png')
-const VanIcon = require('../assets/pngicons/003-van.png')
+const MotorIcon = require('../assets/pngicons/Bike_36x36.png')
+const TruckIcon = require('../assets/pngicons/BoxTruck_36x36.png')
+const VanIcon = require('../assets/pngicons/Van_36x36.png')
 
-const HeartBoxIcon = require('../assets/pngicons/004-box.png')
-const CheckBoxIcon = require('../assets/pngicons/005-box-1.png')
-const LikeBoxIcon = require('../assets/pngicons/006-box-2.png')
-const StarBoxIcon = require('../assets/pngicons/007-box-3.png')
+const CheapIcon = require('../assets/pngicons/SameDay_36x36.png')
+const FastIcon = require('../assets/pngicons/Instant_36x36.png')
+const WalletIcon = require('../assets/pngicons/UpfrontBatchV2_36x36.png')
 
 import SearchIcon from '../assets/icons/search.svg'
 import CouponIcon from '../assets/icons/ticket.svg'
@@ -240,7 +239,7 @@ export default function FullWidthScrollView () {
                 <View style={styles.orderService}>
                   <PngIcon name={MotorIcon} size={24} />
                   <Text style={styles.blackText}>Instant</Text>
-                  <PngIcon name={HeartBoxIcon} size={24} />
+                  <PngIcon name={CheapIcon} size={24} />
                   <Text style={styles.blackText}>S • 1kg</Text>
                 </View>
               </TouchableOpacity>
@@ -264,7 +263,7 @@ export default function FullWidthScrollView () {
                   <Text style={styles.normalText}>Di An High School</Text>
                 </View>
                 <View style={styles.orderService}>
-                  <PngIcon name={CheckBoxIcon} size={24} />
+                  <PngIcon name={FastIcon} size={24} />
                   <Text style={styles.blackText}>Instant</Text>
                   <PngIcon name={TruckIcon} size={24} />
                   <Text style={styles.blackText}>S • 1kg</Text>
