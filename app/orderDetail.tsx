@@ -16,14 +16,13 @@ import { useRouter } from 'expo-router'
 import { useOrderContext } from '../context/orderContext'
 
 const PackageIcon = require('../assets/pngicons/013-on-time.png')
-const MotorIcon = require('../assets/pngicons/002-delivery-bike.png')
-const TruckIcon = require('../assets/pngicons/001-delivery-truck.png')
-const VanIcon = require('../assets/pngicons/003-van.png')
+const MotorIcon = require('../assets/pngicons/Bike_36x36.png')
+const TruckIcon = require('../assets/pngicons/BoxTruck_36x36.png')
+const VanIcon = require('../assets/pngicons/Van_36x36.png')
 
-const HeartBoxIcon = require('../assets/pngicons/004-box.png')
-const CheckBoxIcon = require('../assets/pngicons/005-box-1.png')
-const LikeBoxIcon = require('../assets/pngicons/006-box-2.png')
-const StarBoxIcon = require('../assets/pngicons/007-box-3.png')
+const CheapIcon = require('../assets/pngicons/SameDay_36x36.png')
+const FastIcon = require('../assets/pngicons/Instant_36x36.png')
+const WalletIcon = require('../assets/pngicons/UpfrontBatchV2_36x36.png')
 
 const DetailBoxIcon = require('../assets/pngicons/012-weight-scale.png')
 const VoucherIcon = require('../assets/pngicons/019-pennant.png')
@@ -270,7 +269,7 @@ export default function FullWidthScrollView () {
               style={styles.otherButton}
               onPress={() => setDeliveryOptionsVisible(true)}
             >
-              <PngIcon name={CheckBoxIcon} size={24} />
+              <PngIcon name={FastIcon} size={24} />
               <View style={styles.rightContent}>
                 <View style={styles.topContent}>
                   <Text style={styles.boldText}>
@@ -356,7 +355,7 @@ export default function FullWidthScrollView () {
                         setDeliveryOption('option 1')
                       }}
                     >
-                      <PngIcon name={CheckBoxIcon} size={24} />
+                      <PngIcon name={FastIcon} size={24} />
                       <View style={styles.optionContent}>
                         <View style={styles.optionTop}>
                           <Text style={styles.optionTitle}>Siêu tốc</Text>
@@ -383,7 +382,7 @@ export default function FullWidthScrollView () {
                         setDeliveryOption('option 2')
                       }}
                     >
-                      <PngIcon name={LikeBoxIcon} size={24} />
+                      <PngIcon name={WalletIcon} size={24} />
                       <View style={styles.optionContent}>
                         <View style={styles.optionTop}>
                           <Text style={styles.optionTitle}>Tiết kiệm</Text>
@@ -404,7 +403,7 @@ export default function FullWidthScrollView () {
                         setDeliveryOption('option 3')
                       }}
                     >
-                      <PngIcon name={HeartBoxIcon} size={24} />
+                      <PngIcon name={CheapIcon} size={24} />
                       <View style={styles.optionContent}>
                         <View style={styles.optionTop}>
                           <Text style={styles.optionTitle}>Siêu rẻ</Text>

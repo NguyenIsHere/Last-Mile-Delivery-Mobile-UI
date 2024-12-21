@@ -33,6 +33,10 @@ import more from '../assets/icons/menu-dots.svg'
 // const more = require('../assets/icons/menu-dots.svg')
 
 const grabman = require('../assets/images/grabmanwithpackage.png')
+const small = require('../assets/images/VN_Small.svg.png')
+const medium = require('../assets/images/VN_Medium.svg.png')
+const large = require('../assets/images/VN_Large.svg.png')
+const xlarge = require('../assets/images/VN_ExtraLarge.svg.png')
 
 const screenWidth = Dimensions.get('window').width
 const screenHeight = Dimensions.get('window').height
@@ -90,6 +94,13 @@ export default function productDetailInputScreen () {
     orderInfo.itemDetails.size
   )
   const sizes = ['S', 'M', 'L', 'XL']
+
+  const sizeImages: Record<string, any> = {
+    S: require('../assets/images/VN_Small.svg.png'),
+    M: require('../assets/images/VN_Medium.svg.png'),
+    L: require('../assets/images/VN_Large.svg.png'),
+    XL: require('../assets/images/VN_ExtraLarge.svg.png')
+  }
 
   const types = [
     {
@@ -155,7 +166,18 @@ export default function productDetailInputScreen () {
         <Text>
           Thông tin này giúp các tài xế sắp xếp và bảo quản hàng đúng cách
         </Text>
-        <Image source={grabman} style={{ width: screenWidth, height: 200 }} />
+        <View style={styles.imageContainer}>
+          <Image
+            source={sizeImages[selectedSize]}
+            style={{
+              width: screenWidth,
+              height: screenWidth / 2.5,
+              marginTop: 16
+            }}
+            resizeMode='contain'
+          />
+        </View>
+
         <View style={styles.form}>
           <View style={styles.sizeGroup}>
             <Text style={styles.title}>
@@ -362,6 +384,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginTop: 12,
     marginBottom: 12
+  },
+
+  imageContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%'
   },
   sizeGroup: {
     display: 'flex',

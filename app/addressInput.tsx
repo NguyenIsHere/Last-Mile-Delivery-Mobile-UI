@@ -379,7 +379,10 @@ export default function AddressInputScreen () {
           )}
         </View>
       </ScrollView>
-      <TouchableOpacity style={styles.mapButton}>
+      <TouchableOpacity
+        style={styles.mapButton}
+        onPress={() => router.push('/map')}
+      >
         <SvgIcon Icon={Map} size={14} color='#202020' />
         <Text style={styles.mapButtonText}>Chọn từ bản đồ</Text>
       </TouchableOpacity>

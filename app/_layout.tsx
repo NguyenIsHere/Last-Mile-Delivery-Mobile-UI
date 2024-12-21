@@ -89,6 +89,16 @@ function RootLayoutNav () {
               animation: 'fade'
             }}
           />
+
+          <Stack.Screen
+            name='map'
+            options={{
+              title: 'Theo dõi đơn hàng', //
+              headerShown: true, // Hiển thị nút Back
+              animation: 'fade'
+            }}
+          />
+
           <Stack.Screen
             name='productDetail'
             options={{
