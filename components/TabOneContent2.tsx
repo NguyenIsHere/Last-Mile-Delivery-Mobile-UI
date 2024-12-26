@@ -111,7 +111,7 @@ export default function FullWidthScrollView () {
             <TouchableOpacity onPress={() => router.push('/orderDetail')}>
               <SvgIcon Icon={CouponIcon} size={20} color='#FDFDFF' />
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/multiDestinations')}>
               <SvgIcon Icon={BellIcon} size={20} color='#FDFDFF' />
             </TouchableOpacity>
           </View>
@@ -129,7 +129,10 @@ export default function FullWidthScrollView () {
                 style={[
                   orderInfo.senderIn4.address
                     ? { color: '#202020' }
-                    : { color: '#727272' }
+                    : { color: '#727272' },
+                  {
+                    fontFamily: 'Quicksand-Medium'
+                  }
                 ]}
                 numberOfLines={1}
                 ellipsizeMode='tail' // tail | middle | head | clip
@@ -169,7 +172,10 @@ export default function FullWidthScrollView () {
                 style={[
                   orderInfo.receiverIn4.address
                     ? { color: '#202020' }
-                    : { color: '#727272' }
+                    : { color: '#727272' },
+                  {
+                    fontFamily: 'Quicksand-Medium'
+                  }
                 ]}
                 numberOfLines={1}
                 ellipsizeMode='tail' // tail | middle | head | clip
@@ -197,9 +203,9 @@ export default function FullWidthScrollView () {
                 <View style={styles.dots}></View>
                 <Text
                   style={{
-                    fontWeight: '500',
                     color: '#1B6DC5',
-                    marginTop: 16
+                    marginTop: 16,
+                    fontFamily: 'Quicksand-Bold'
                   }}
                 >
                   + Thêm điểm giao
@@ -225,7 +231,9 @@ export default function FullWidthScrollView () {
                 <View style={styles.orderContent}>
                   <SvgIcon Icon={Round} size={12} color='#F75536' />
                   <Text style={styles.boldText}>Nguyễn Văn A</Text>
-                  <Text style={styles.normalText}>56/34 Hai Ba Trung St.</Text>
+                  <Text style={styles.normalText}>
+                    • 56/34 Hai Ba Trung St.
+                  </Text>
                 </View>
                 <View style={styles.dots2}>
                   <View style={styles.dot}></View>
@@ -234,7 +242,7 @@ export default function FullWidthScrollView () {
                 <View style={styles.orderContent}>
                   <SvgIcon Icon={Round} size={12} color='#3282B9' />
                   <Text style={styles.boldText}>Trần Văn B</Text>
-                  <Text style={styles.normalText}>Di An High School</Text>
+                  <Text style={styles.normalText}>• Di An High School</Text>
                 </View>
                 <View style={styles.orderService}>
                   <PngIcon name={MotorIcon} size={24} />
@@ -251,7 +259,9 @@ export default function FullWidthScrollView () {
                 <View style={styles.orderContent}>
                   <SvgIcon Icon={Round} size={12} color='#F75536' />
                   <Text style={styles.boldText}>Nguyễn Văn A</Text>
-                  <Text style={styles.normalText}>56/34 Hai Ba Trung St.</Text>
+                  <Text style={styles.normalText}>
+                    • 56/34 Hai Ba Trung St.
+                  </Text>
                 </View>
                 <View style={styles.dots2}>
                   <View style={styles.dot}></View>
@@ -260,7 +270,7 @@ export default function FullWidthScrollView () {
                 <View style={styles.orderContent}>
                   <SvgIcon Icon={Round} size={12} color='#3282B9' />
                   <Text style={styles.boldText}>Trần Văn B</Text>
-                  <Text style={styles.normalText}>Di An High School</Text>
+                  <Text style={styles.normalText}>• Di An High School</Text>
                 </View>
                 <View style={styles.orderService}>
                   <PngIcon name={FastIcon} size={24} />
@@ -424,7 +434,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Quicksand-Bold',
     marginBottom: 20
   },
   optionButton: {
@@ -459,7 +469,7 @@ const styles = StyleSheet.create({
   },
   optionTitle: {
     fontSize: 14,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   optionText: {
     color: 'gray',
@@ -480,7 +490,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     textAlign: 'center',
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   savedOrderGroup: {
     marginBottom: 20
@@ -515,10 +525,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4
   },
   boldText: {
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   normalText: {
-    color: '#727272'
+    color: '#727272',
+    fontFamily: 'Quicksand-Medium'
   },
   dots: {
     justifyContent: 'space-between',
@@ -551,6 +562,7 @@ const styles = StyleSheet.create({
     gap: 8
   },
   blackText: {
-    color: 'black'
+    color: 'black',
+    fontFamily: 'Quicksand-Medium'
   }
 })

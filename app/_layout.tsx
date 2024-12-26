@@ -98,6 +98,23 @@ function RootLayoutNav () {
               animation: 'fade'
             }}
           />
+          <Stack.Screen
+            name='multiDestinations'
+            options={{
+              title: 'Nhiều điểm đến', //
+              headerShown: true, // Hiển thị nút Back
+              animation: 'fade'
+            }}
+          />
+
+          <Stack.Screen
+            name='history'
+            options={{
+              title: 'Lịch sử', //
+              headerShown: false, // Hiển thị nút Back
+              animation: 'fade'
+            }}
+          />
 
           <Stack.Screen
             name='productDetail'
