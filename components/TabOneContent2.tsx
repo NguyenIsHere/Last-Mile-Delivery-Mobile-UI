@@ -86,6 +86,19 @@ export default function FullWidthScrollView () {
 
   const { orderInfo, updateOrderInfo } = useOrderContext()
 
+  // State to manage delivery points
+  const [deliveryPoints, setDeliveryPoints] = useState([
+    { id: 1, address: orderInfo.receiverIn4.address || '' }
+  ])
+
+  // Add a new delivery point
+  const addDeliveryPoint = () => {
+    setDeliveryPoints([
+      ...deliveryPoints,
+      { id: deliveryPoints.length + 1, address: '' } // New delivery point with default values
+    ])
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -105,7 +118,7 @@ export default function FullWidthScrollView () {
             </View>
           </View>
           <View style={styles.headerRight}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => router.push('/map')}>
               <SvgIcon Icon={SearchIcon} size={20} color='#FDFDFF' />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => router.push('/orderDetail')}>
@@ -131,7 +144,8 @@ export default function FullWidthScrollView () {
                     ? { color: '#202020' }
                     : { color: '#727272' },
                   {
-                    fontFamily: 'Quicksand-Medium'
+                    fontFamily: 'Quicksand-Medium',
+                    fontSize: 16
                   }
                 ]}
                 numberOfLines={1}
@@ -164,7 +178,7 @@ export default function FullWidthScrollView () {
               </View>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.orderContent, { marginBottom: -8 }]}
+              style={[styles.orderContent]}
               onPress={() => router.push('/addressInput')}
             >
               <SvgIcon Icon={Round} size={12} color='#F75536' />
@@ -174,7 +188,8 @@ export default function FullWidthScrollView () {
                     ? { color: '#202020' }
                     : { color: '#727272' },
                   {
-                    fontFamily: 'Quicksand-Medium'
+                    fontFamily: 'Quicksand-Medium',
+                    fontSize: 16
                   }
                 ]}
                 numberOfLines={1}
@@ -195,10 +210,61 @@ export default function FullWidthScrollView () {
                 }}
               />
             </TouchableOpacity>
+            {/* Dynamic Delivery Points */}
+            {deliveryPoints.map((point, index) => (
+              <View key={point.id}>
+                <TouchableOpacity
+                  style={[styles.orderContent]}
+                  onPress={() => router.push('/addressInput')}
+                >
+                  <View style={styles.dots}>
+                    <View style={styles.dot}></View>
+                    <View style={styles.dot}></View>
+                    <View style={styles.dot}></View>
+                    <View style={styles.dot}></View>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={[styles.orderContent]}
+                  onPress={() => router.push('/addressInput')}
+                >
+                  <SvgIcon Icon={Round} size={12} color='#F75536' />
+                  <Text
+                    style={[
+                      point.address
+                        ? { color: '#202020' }
+                        : { color: '#727272' },
+                      { fontFamily: 'Quicksand-Medium', fontSize: 16 }
+                    ]}
+                    numberOfLines={1}
+                    ellipsizeMode='tail'
+                  >
+                    {point.address || 'Giao đến đâu?'}
+                  </Text>
+                  <LinearGradient
+                    colors={[
+                      'rgba(255, 255, 255, 1)',
+                      'rgba(255, 255, 255, 0)'
+                    ]}
+                    start={{ x: 1, y: 0 }}
+                    end={{ x: 0, y: 0 }}
+                    style={{
+                      flex: 1,
+                      position: 'absolute',
+                      width: 16,
+                      height: '100%',
+                      right: 0
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+            ))}
+
             {orderInfo.receiverIn4.address && (
               <TouchableOpacity
                 style={[styles.orderContent, { marginBottom: -10 }]}
-                onPress={() => router.push('/addressInput')}
+                // onPress={() => router.push('/addressInput')}
+                onPress={addDeliveryPoint}
               >
                 <View style={styles.dots}></View>
                 <Text
@@ -378,7 +444,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     marginTop: 5,
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'center',
     color: '#444',
     fontFamily: 'Quicksand-Medium'
@@ -405,7 +471,7 @@ const styles = StyleSheet.create({
   },
   buttonText2: {
     marginLeft: 10,
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'left',
     color: '#444',
     fontFamily: 'Quicksand-SemiBold'
@@ -510,10 +576,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     padding: 10,
     backgroundColor: '#FFFFFF',
-    borderRadius: 10,
+    borderRadius: 12,
     marginTop: 5,
     borderWidth: 1,
-    borderColor: '#727272',
+    borderColor: '#DEE7F3',
     width: screenWidth - 32
   },
   orderContent: {
@@ -525,11 +591,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4
   },
   boldText: {
-    fontFamily: 'Quicksand-Bold'
+    fontFamily: 'Quicksand-Bold',
+    fontSize: 16
   },
   normalText: {
     color: '#727272',
-    fontFamily: 'Quicksand-Medium'
+    fontFamily: 'Quicksand-Medium',
+    fontSize: 16
   },
   dots: {
     justifyContent: 'space-between',
@@ -563,6 +631,7 @@ const styles = StyleSheet.create({
   },
   blackText: {
     color: 'black',
-    fontFamily: 'Quicksand-Medium'
+    fontFamily: 'Quicksand-Medium',
+    fontSize: 16
   }
 })

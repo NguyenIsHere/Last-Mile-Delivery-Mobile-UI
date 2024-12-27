@@ -33,6 +33,7 @@ const VoucherIcon = require('../assets/pngicons/019-pennant.png')
 
 const MapBG = require('../assets/images/BigMap.png')
 const Driving = require('../assets/images/delivery-man.jpg')
+const Driver = require('../assets/images/home-icon-Assistant.png')
 
 import BookmarkIcon from '../assets/icons/bookmark.svg'
 import LeftArrow from '../assets/icons/angle-small-left.svg'
@@ -90,7 +91,7 @@ function SvgIcon ({
   return <Icon width={size} height={size} fill={Color} />
 }
 
-export default function Map () {
+export default function map () {
   const router = useRouter() // Dùng `useRouter` cho điều hướng
   const { orderInfo, updateOrderInfo } = useOrderContext()
 
@@ -219,14 +220,13 @@ export default function Map () {
           <View style={styles.driverInfo}>
             <View style={styles.driver}>
               <Image
-                source={Driving}
+                source={Driver}
                 style={{
-                  width: 80,
-                  height: 80,
+                  width: 60,
+                  height: 60,
                   alignItems: 'center',
                   justifyContent: 'center'
                 }}
-                resizeMode='center'
               ></Image>
               <View style={styles.textContainer}>
                 <Text style={styles.text}>5.0⭐</Text>
@@ -262,7 +262,10 @@ export default function Map () {
               >
                 <SvgIcon Icon={Round} size={12} Color={color.blueColor100} />
                 <Text
-                  style={{ fontWeight: 'bold', color: color.fontColor100 }}
+                  style={{
+                    fontFamily: 'Quicksand-Bold',
+                    color: color.fontColor100
+                  }}
                   numberOfLines={1}
                 >
                   {orderInfo.senderIn4.address || 'Lấy hàng ở đâu?'}
@@ -283,7 +286,8 @@ export default function Map () {
                   style={{
                     color: color.fontColor60,
                     marginBottom: 10,
-                    paddingRight: 20
+                    paddingRight: 20,
+                    fontFamily: 'Quicksand-Medium'
                   }}
                   numberOfLines={2}
                 >
@@ -301,7 +305,10 @@ export default function Map () {
                   Color={color.orangeColor100}
                 />
                 <Text
-                  style={{ fontWeight: 'bold', color: color.fontColor100 }}
+                  style={{
+                    fontFamily: 'Quicksand-Bold',
+                    color: color.fontColor100
+                  }}
                   numberOfLines={1}
                 >
                   {orderInfo.receiverIn4.address || 'Giao đến đâu?'}
@@ -322,7 +329,8 @@ export default function Map () {
                   style={{
                     color: color.fontColor60,
                     marginBottom: 10,
-                    paddingRight: 20
+                    paddingRight: 20,
+                    fontFamily: 'Quicksand-Medium'
                   }}
                   numberOfLines={2}
                 >
@@ -356,7 +364,7 @@ export default function Map () {
                   />
                   <Text
                     style={{
-                      fontWeight: 'bold',
+                      fontFamily: 'Quicksand-Bold',
                       color: color.blueColor90
                     }}
                     numberOfLines={1}
@@ -431,12 +439,14 @@ const styles = StyleSheet.create({
 
   text: {
     color: color.fontColor100,
-    fontWeight: 'bold',
-    fontSize: 16
+    fontSize: 16,
+    fontFamily: 'Quicksand-Bold'
   },
 
   subText: {
-    color: color.fontColor60
+    color: color.fontColor60,
+
+    fontFamily: 'Quicksand-Medium'
   },
 
   lineContainer: {
@@ -454,7 +464,8 @@ const styles = StyleSheet.create({
 
   driverInfo: {
     width: '100%',
-    marginBottom: 20
+    marginBottom: 20,
+    marginTop: 10
   },
 
   driver: {

@@ -381,7 +381,7 @@ export default function AddressInputScreen () {
       </ScrollView>
       <TouchableOpacity
         style={styles.mapButton}
-        onPress={() => router.push('/map')}
+        onPress={() => router.push('/chooseFromMap')}
       >
         <SvgIcon Icon={Map} size={14} color='#202020' />
         <Text style={styles.mapButtonText}>Chọn từ bản đồ</Text>
@@ -436,7 +436,7 @@ const styles = StyleSheet.create({
     padding: 8,
     fontSize: 16,
     borderRadius: 8,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   theRest: {
     display: 'flex',
@@ -472,13 +472,14 @@ const styles = StyleSheet.create({
   tabButtonText: {
     fontSize: 16,
     textAlign: 'center',
-    color: '#333'
+    color: '#333',
+    fontFamily: 'Quicksand-Bold'
   },
   activeTabButtonText: {
     color: '#2A5958',
-    fontWeight: 'bold',
     fontSize: 16,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: 'Quicksand-Bold'
   },
   tabContent: {
     flex: 1,
@@ -500,13 +501,15 @@ const styles = StyleSheet.create({
   },
   addressTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
+
+    fontFamily: 'Quicksand-Bold',
     marginBottom: 4,
     color: '#202020'
   },
   addressDetail: {
     fontSize: 14,
-    color: '#666'
+    color: '#666',
+    fontFamily: 'Quicksand-Medium'
   },
   mapButton: {
     position: 'absolute',
@@ -523,17 +526,19 @@ const styles = StyleSheet.create({
   mapButtonText: {
     fontSize: 16,
     marginLeft: 8,
-    color: '#202020'
+    color: '#202020',
+    fontFamily: 'Quicksand-Medium'
   },
   noResultText: {
     fontSize: 16,
     textAlign: 'center',
     color: '#666',
-    marginTop: 16
+    marginTop: 16,
+    fontFamily: 'Quicksand-Medium'
   },
   resultTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Quicksand-Bold',
     marginTop: 16
   }
 })

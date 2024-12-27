@@ -12,7 +12,13 @@ import 'react-native-reanimated'
 
 import { OrderProvider } from '../context/orderContext'
 
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput
+} from 'react-native'
 
 import { useColorScheme } from '@/components/useColorScheme'
 
@@ -96,6 +102,14 @@ function RootLayoutNav () {
               title: 'Theo dõi đơn hàng', //
               headerShown: true, // Hiển thị nút Back
               animation: 'fade'
+            }}
+          />
+          <Stack.Screen
+            name='chooseFromMap'
+            options={{
+              title: 'Theo dõi đơn hàng', //
+              animation: 'fade',
+              headerShown: false
             }}
           />
           <Stack.Screen
