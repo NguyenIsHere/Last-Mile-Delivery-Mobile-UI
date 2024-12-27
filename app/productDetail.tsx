@@ -163,7 +163,7 @@ export default function productDetailInputScreen () {
         showsHorizontalScrollIndicator={false} // Ẩn thanh cuộn ngang (nếu có)
         contentContainerStyle={[styles.scrollView]}
       >
-        <Text>
+        <Text style={{ fontFamily: 'Quicksand-Medium' }}>
           Thông tin này giúp các tài xế sắp xếp và bảo quản hàng đúng cách
         </Text>
         <View style={styles.imageContainer}>
@@ -233,7 +233,9 @@ export default function productDetailInputScreen () {
           </View>
         </View>
         <TouchableOpacity style={styles.addImageButton}>
-          <Text>Thêm ảnh (Không bắt buộc)</Text>
+          <Text style={{ fontFamily: 'Quicksand-Medium' }}>
+            Thêm ảnh (Không bắt buộc)
+          </Text>
         </TouchableOpacity>
         <View style={styles.typeGroup}>
           <Text style={styles.typeGroupTitle}>
@@ -381,7 +383,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Quicksand-Bold',
     marginTop: 12,
     marginBottom: 12
   },
@@ -418,11 +420,11 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 14,
     color: '#2A5958',
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   selectedButtonText: {
     color: '#FFFFFF', // Màu chữ khi được chọn
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
 
   weightGroup: {
@@ -468,7 +470,7 @@ const styles = StyleSheet.create({
   },
   typeGroupTitle: {
     fontSize: 16,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   typeHorizontalList: {
     display: 'flex',
@@ -491,10 +493,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#2A5958'
   },
   typeButtonText: {
-    color: '#2A5958'
+    color: '#2A5958',
+    fontFamily: 'Quicksand-Medium'
   },
   selectedTypeButtonText: {
-    color: '#FFFFFF' // Màu chữ khi được chọn
+    color: '#FFFFFF', // Màu chữ khi được chọn,
+    fontFamily: 'Quicksand-Medium'
   },
   insuranceGroup: {
     display: 'flex',
@@ -522,10 +526,12 @@ const styles = StyleSheet.create({
   },
   buttonSubText: {
     fontSize: 12,
-    color: '#2A5958'
+    color: '#2A5958',
+    fontFamily: 'Quicksand-Medium'
   },
   selectedButtonSubText: {
-    color: '#FFFFFF' // Màu chữ khi được chọn
+    color: '#FFFFFF', // Màu chữ khi được chọn
+    fontFamily: 'Quicksand-Medium'
   },
   submitButtonContainer: {
     position: 'absolute',
@@ -556,7 +562,7 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: '#A2A2A2',
     fontSize: 16,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   submitButtonActive: {
     backgroundColor: '#2A5958',
@@ -570,6 +576,6 @@ const styles = StyleSheet.create({
   submitButtonTextActive: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   }
 })

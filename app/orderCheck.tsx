@@ -107,7 +107,7 @@ export default function FullWidthScrollView () {
                 }}
               >
                 <Text
-                  style={{ fontWeight: 'bold', color: '#202020' }}
+                  style={{ fontFamily: 'Quicksand-Bold', color: '#202020' }}
                   numberOfLines={1}
                 >
                   Chi tiết đơn hàng
@@ -140,11 +140,15 @@ export default function FullWidthScrollView () {
 
             <TouchableOpacity
               style={styles.orderContent}
-              onPress={() => router.push('/addressInput')}
+              onPress={() => router.push('/senderInfo')}
             >
               <View style={styles.dots}></View>
               <Text
-                style={{ color: '#6B6B6B', marginBottom: 10 }}
+                style={{
+                  fontFamily: 'Quicksand-Medium',
+                  color: '#6B6B6B',
+                  marginBottom: 10
+                }}
                 numberOfLines={1}
               >
                 Trần Khôi Nguyên • 0867554432
@@ -176,7 +180,9 @@ export default function FullWidthScrollView () {
                   flex: 1
                 }}
               >
-                <Text style={{ fontWeight: 'bold', color: '#202020' }}>
+                <Text
+                  style={{ fontFamily: 'Quicksand-Bold', color: '#202020' }}
+                >
                   Người nhận 1
                 </Text>
                 <SvgIcon Icon={RightArrow} size={16} color='#5D5D5D' />
@@ -185,12 +191,12 @@ export default function FullWidthScrollView () {
 
             <TouchableOpacity
               style={styles.orderContent}
-              onPress={() => router.push('/addressInput')}
+              onPress={() => router.push('/receiverInfo')}
             >
               <View style={styles.dots}></View>
               <Text
                 style={{
-                  fontWeight: 'bold',
+                  fontFamily: 'Quicksand-Bold',
                   color: '#1B6DC5',
                   marginBottom: 10
                 }}
@@ -519,7 +525,7 @@ export default function FullWidthScrollView () {
             }}
           ></View>
           <View style={styles.noteBox}>
-            <Text style={{ fontWeight: 'bold', color: '#27282D' }}>
+            <Text style={{ fontFamily: 'Quicksand-Bold', color: '#27282D' }}>
               Lưu ý trước khi giao hàng
             </Text>
             <Text style={{ fontSize: 12, lineHeight: 16, color: '#383A3F' }}>
@@ -619,7 +625,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'left',
     color: '#444',
-    fontFamily: 'Quicksand-SemiBold'
+    fontFamily: 'Quicksand-Bold'
   },
   titleText: {
     fontSize: 20,
@@ -645,7 +651,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Quicksand-Bold',
     marginBottom: 20
   },
   optionButton: {
@@ -680,15 +686,17 @@ const styles = StyleSheet.create({
   },
   optionTitle: {
     fontSize: 14,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   optionText: {
     color: 'gray',
-    fontSize: 14
+    fontSize: 14,
+    fontFamily: 'Quicksand-Medium'
   },
   optionTextAlert: {
     color: '#E27265',
-    fontSize: 14
+    fontSize: 14,
+    fontFamily: 'Quicksand-Medium'
   },
   optionSubmitButton: {
     backgroundColor: '#03B151',
@@ -701,7 +709,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     textAlign: 'center',
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   orderContent: {
     display: 'flex',
@@ -713,11 +721,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4
   },
   boldText: {
-    fontWeight: 'bold',
+    fontFamily: 'Quicksand-Bold',
     color: '#303030'
   },
   normalText: {
-    color: '#303030'
+    color: '#303030',
+    fontFamily: 'Quicksand-Medium'
   },
   dots: {
     justifyContent: 'space-between',
@@ -771,7 +780,8 @@ const styles = StyleSheet.create({
     gap: 8
   },
   blackText: {
-    color: 'black'
+    color: 'black',
+    fontFamily: 'Quicksand-Medium'
   },
   submitButtonContainer: {
     position: 'absolute',
@@ -797,7 +807,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: screenWidth - 32,
-    marginBottom: 10
+    marginBottom: 10,
+    fontFamily: 'Quicksand-Medium'
   },
   submitButtonGroup: {
     display: 'flex',
@@ -815,12 +826,13 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: '#E6E9E9',
     borderRadius: 25,
-    padding: 16
+    padding: 16,
+    fontFamily: 'Quicksand-Medium'
   },
   submitButtonText: {
     color: '#A2A2A2',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Quicksand-Bold',
     textAlign: 'center'
   },
   submitButtonActive: {
@@ -831,12 +843,13 @@ const styles = StyleSheet.create({
   },
   submitContainerBlackText: {
     color: '#000',
-    fontSize: 16
+    fontSize: 16,
+    fontFamily: 'Quicksand-Medium'
   },
   submitContainerBoldText: {
     color: '#000',
     fontSize: 20,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   voucherGroup: {
     display: 'flex',
@@ -848,7 +861,7 @@ const styles = StyleSheet.create({
   voucherTitle: {
     color: '#000',
     fontSize: 16,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   voucherButton: {
     display: 'flex',
@@ -863,7 +876,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    flex: 1
+    flex: 1,
+    fontFamily: 'Quicksand-Medium'
   },
   noteBox: {
     display: 'flex',

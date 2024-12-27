@@ -134,7 +134,7 @@ export default function FullWidthScrollView () {
                   style={
                     orderInfo.senderIn4.address
                       ? { fontWeight: 'bold', color: '#202020' }
-                      : { color: '#6B6B6B' }
+                      : { fontFamily: 'Quicksand-Medium', color: '#6B6B6B' }
                   }
                   numberOfLines={1}
                 >
@@ -170,10 +170,10 @@ export default function FullWidthScrollView () {
                       orderInfo.senderIn4.name && orderInfo.senderIn4.phone
                         ? '#6B6B6B'
                         : '#1B6DC5',
-                    fontWeight:
+                    fontFamily:
                       orderInfo.senderIn4.name && orderInfo.senderIn4.phone
-                        ? 'normal'
-                        : 'bold',
+                        ? 'Quicksand-Medium'
+                        : 'Quicksand-Bold',
                     marginBottom: 10
                   }}
                   numberOfLines={1}
@@ -197,8 +197,8 @@ export default function FullWidthScrollView () {
                 <Text
                   style={
                     orderInfo.receiverIn4.address
-                      ? { fontWeight: 'bold', color: '#202020' }
-                      : { color: '#6B6B6B' }
+                      ? { fontFamily: 'Quicksand-Bold', color: '#202020' }
+                      : { fontFamily: 'Quicksand-Medium', color: '#6B6B6B' }
                   }
                   numberOfLines={1}
                 >
@@ -222,10 +222,10 @@ export default function FullWidthScrollView () {
                       orderInfo.receiverIn4.name && orderInfo.receiverIn4.phone
                         ? '#6B6B6B'
                         : '#1B6DC5',
-                    fontWeight:
+                    fontFamily:
                       orderInfo.receiverIn4.name && orderInfo.receiverIn4.phone
-                        ? 'normal'
-                        : 'bold',
+                        ? 'Quicksand-Medium'
+                        : 'Quicksand-Bold',
                     marginBottom: 10
                   }}
                   numberOfLines={1}
@@ -259,7 +259,9 @@ export default function FullWidthScrollView () {
                 onPress={() => router.push('/addressInput')}
               >
                 <SvgIcon Icon={Round} size={12} color='#C1C1C1' />
-                <Text style={{ fontWeight: 'bold', color: '#6B6B6B' }}>
+                <Text
+                  style={{ fontFamily: 'Quicksand-Bold', color: '#6B6B6B' }}
+                >
                   Thêm / Chỉnh sửa điểm giao
                 </Text>
               </TouchableOpacity>
@@ -307,7 +309,7 @@ export default function FullWidthScrollView () {
                       color: isItemDetailsComplete(orderInfo.itemDetails)
                         ? '#202020'
                         : '#1B6DC5',
-                      fontWeight: 'bold'
+                      fontFamily: 'Quicksand-Bold'
                     }}
                     numberOfLines={1}
                   >
@@ -621,7 +623,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'left',
     color: '#444',
-    fontFamily: 'Quicksand-SemiBold'
+    fontFamily: 'Quicksand-Bold'
   },
   titleText: {
     fontSize: 20,
@@ -647,7 +649,7 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Quicksand-Bold',
     marginBottom: 20
   },
   optionButton: {
@@ -682,15 +684,17 @@ const styles = StyleSheet.create({
   },
   optionTitle: {
     fontSize: 14,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   optionText: {
     color: 'gray',
-    fontSize: 14
+    fontSize: 14,
+    fontFamily: 'Quicksand-Medium'
   },
   optionTextAlert: {
     color: '#E27265',
-    fontSize: 14
+    fontSize: 14,
+    fontFamily: 'Quicksand-Medium'
   },
   optionSubmitButton: {
     backgroundColor: '#03B151',
@@ -703,7 +707,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     textAlign: 'center',
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   orderContent: {
     display: 'flex',
@@ -715,11 +719,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4
   },
   boldText: {
-    fontWeight: 'bold',
-    color: '#202020'
+    color: '#202020',
+    fontFamily: 'Quicksand-Bold'
   },
   normalText: {
-    color: '#6B6B6B'
+    color: '#6B6B6B',
+    fontFamily: 'Quicksand-Medium'
   },
   dots: {
     justifyContent: 'space-between',
@@ -773,7 +778,9 @@ const styles = StyleSheet.create({
     gap: 8
   },
   blackText: {
-    color: 'black'
+    color: '#4B4B4B',
+    fontSize: 16,
+    fontFamily: 'Quicksand-Bold'
   },
   submitButtonContainer: {
     position: 'absolute',
@@ -830,8 +837,8 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: '#A2A2A2',
     fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontFamily: 'Quicksand-Bold'
   },
   submitButtonActive: {
     backgroundColor: '#2A5958'
@@ -841,12 +848,13 @@ const styles = StyleSheet.create({
   },
   submitContainerBlackText: {
     color: '#000',
-    fontSize: 16
+    fontSize: 16,
+    fontFamily: 'Quicksand-Medium'
   },
   submitContainerBoldText: {
     color: '#000',
     fontSize: 20,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Bold'
   },
   voucherGroup: {
     display: 'flex',
@@ -857,7 +865,7 @@ const styles = StyleSheet.create({
   voucherTitle: {
     color: '#000',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontFamily: 'Quicksand-Bold',
     marginBottom: 10
   },
   voucherButton: {
@@ -872,6 +880,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    flex: 1
+    flex: 1,
+    fontFamily: 'Quicksand-Medium'
   }
 })

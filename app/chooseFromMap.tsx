@@ -208,7 +208,7 @@ export default function chooseFromMap () {
           </TouchableOpacity>
           <View style={styles.menuContent}>
             <View style={styles.deliveryState}>
-              <View style={[styles.deliveryTopState]}>
+              <View style={[styles.deliveryTopState, { marginTop: 10 }]}>
                 <View style={styles.textContainer}>
                   <Text style={[styles.text]} numberOfLines={1}>
                     Trường Đại Học Công Nghệ Thông Tin TP.Hồ Chí Minh
@@ -223,7 +223,10 @@ export default function chooseFromMap () {
               <View style={[styles.deliveryTopState]}>
                 <View style={styles.textContainer2}>
                   <SvgIcon Icon={NavigationIcon} size={32} Color={'#027F4A'} />
-                  <Text style={[styles.text]} numberOfLines={1}>
+                  <Text
+                    style={[styles.text, { paddingBottom: 3 }]}
+                    numberOfLines={1}
+                  >
                     Cổng Đón/Trả Khách
                   </Text>
                 </View>
