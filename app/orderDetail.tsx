@@ -256,7 +256,7 @@ export default function FullWidthScrollView () {
 
               <TouchableOpacity
                 style={styles.orderContent}
-                onPress={() => router.push('/addressInput')}
+                onPress={() => router.push('/addChangeDestination')}
               >
                 <SvgIcon Icon={Round} size={12} color='#C1C1C1' />
                 <Text
