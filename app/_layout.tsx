@@ -103,6 +103,14 @@ function RootLayoutNav () {
               animation: 'fade'
             }}
           />
+          <Stack.Screen
+            name='addMoreDestination'
+            options={{
+              title: 'Thêm/chỉnh sửa điểm giao', // Tiêu đề màn hình
+              headerShown: false, // Hiển thị nút Back
+              animation: 'fade'
+            }}
+          />
 
           <Stack.Screen
             name='map'

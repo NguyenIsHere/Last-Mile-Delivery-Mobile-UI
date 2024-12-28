@@ -100,6 +100,7 @@ const AddChangeDestinationScreen: React.FC = () => {
 
   const handleChangeAddress = (id: string) => {
     console.log('Navigate to change address screen for receiver:', id)
+    router.push('/addMoreDestination')
   }
 
   const router = useRouter() // Dùng `useRouter` cho điều hướng
