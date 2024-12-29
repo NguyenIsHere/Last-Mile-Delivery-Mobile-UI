@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   ScrollView,
   StyleSheet,
@@ -87,15 +87,42 @@ export default function FullWidthScrollView () {
   const { orderInfo, updateOrderInfo } = useOrderContext()
 
   // State to manage delivery points
+  // const [deliveryPoints, setDeliveryPoints] = useState([
+  //   { id: 1, address: orderInfo.receiverIn4.address || 'Giao đến đâu?' }
+  // ])
+
   const [deliveryPoints, setDeliveryPoints] = useState([
-    { id: 1, address: orderInfo.receiverIn4.address || '' }
+    { id: 1, address: orderInfo.receiverIn4.address || 'Giao đến đâu?' }
   ])
+
+  useEffect(() => {
+    // Update deliveryPoints when orderInfo.receiverIn4.address changes
+    if (orderInfo.receiverIn4.address) {
+      setDeliveryPoints([{ id: 1, address: orderInfo.receiverIn4.address }])
+    } else {
+      // Set default value if address is empty
+      setDeliveryPoints([{ id: 1, address: 'Giao đến đâu?' }])
+    }
+  }, [orderInfo.receiverIn4.address])
+
+  // Function to update the receiver's address
+  const updateReceiverAddress = (newAddress: string) => {
+    updateOrderInfo({
+      receiverIn4: {
+        ...orderInfo.receiverIn4,
+        address: newAddress
+      }
+    })
+  }
 
   // Add a new delivery point
   const addDeliveryPoint = () => {
     setDeliveryPoints([
       ...deliveryPoints,
-      { id: deliveryPoints.length + 1, address: '' } // New delivery point with default values
+      {
+        id: deliveryPoints.length + 1,
+        address: 'Giao đến đâu?'
+      } // New delivery point with default values
     ])
   }
 
@@ -114,7 +141,7 @@ export default function FullWidthScrollView () {
             <Image source={avatar} style={styles.image} />
             <View>
               <Text style={styles.headerText}>Trần Khôi Nguyên</Text>
-              <Text style={styles.headerText}>Liên kết Viettel++</Text>
+              <Text style={styles.headerText}>Liên kết GrabMerchant</Text>
             </View>
           </View>
           <View style={styles.headerRight}>
@@ -166,7 +193,7 @@ export default function FullWidthScrollView () {
                 }}
               />
             </TouchableOpacity>
-            <TouchableOpacity
+            {/* <TouchableOpacity
               style={styles.orderContent}
               onPress={() => router.push('/addressInput')}
             >
@@ -209,7 +236,8 @@ export default function FullWidthScrollView () {
                   right: 0
                 }}
               />
-            </TouchableOpacity>
+            </TouchableOpacity> */}
+
             {/* Dynamic Delivery Points */}
             {deliveryPoints.map((point, index) => (
               <View key={point.id}>
@@ -231,7 +259,8 @@ export default function FullWidthScrollView () {
                   <SvgIcon Icon={Round} size={12} color='#F75536' />
                   <Text
                     style={[
-                      point.address
+                      point.address === orderInfo.receiverIn4.address &&
+                      point.address !== 'Giao đến đâu?'
                         ? { color: '#202020' }
                         : { color: '#727272' },
                       { fontFamily: 'Quicksand-Medium', fontSize: 16 }
@@ -239,7 +268,7 @@ export default function FullWidthScrollView () {
                     numberOfLines={1}
                     ellipsizeMode='tail'
                   >
-                    {point.address || 'Giao đến đâu?'}
+                    {point.address}
                   </Text>
                   <LinearGradient
                     colors={[
@@ -578,8 +607,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 12,
     marginTop: 5,
-    borderWidth: 1,
-    borderColor: '#DEE7F3',
+    borderWidth: 0.75,
+    borderColor: '#DDDDDD',
     width: screenWidth - 32
   },
   orderContent: {

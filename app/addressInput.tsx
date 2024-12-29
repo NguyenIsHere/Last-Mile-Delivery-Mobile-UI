@@ -436,7 +436,8 @@ const styles = StyleSheet.create({
     padding: 8,
     fontSize: 16,
     borderRadius: 8,
-    fontFamily: 'Quicksand-Bold'
+    fontFamily: 'Quicksand-Bold',
+    color: '#4b4b4b'
   },
   theRest: {
     display: 'flex',
