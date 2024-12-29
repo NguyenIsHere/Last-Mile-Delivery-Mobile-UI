@@ -107,7 +107,7 @@ export default function FullWidthScrollView () {
                 }}
               >
                 <Text
-                  style={{ fontFamily: 'Quicksand-Bold', color: '#202020' }}
+                  style={{ fontFamily: 'Quicksand-Bold', color: '#4b4b4b' }}
                   numberOfLines={1}
                 >
                   Chi tiết đơn hàng
@@ -129,7 +129,7 @@ export default function FullWidthScrollView () {
                 }}
               >
                 <Text
-                  style={{ fontWeight: 'bold', color: '#202020' }}
+                  style={{ fontFamily: 'Quicksand-Bold', color: '#4b4b4b' }}
                   numberOfLines={1}
                 >
                   Người gửi
@@ -181,7 +181,7 @@ export default function FullWidthScrollView () {
                 }}
               >
                 <Text
-                  style={{ fontFamily: 'Quicksand-Bold', color: '#202020' }}
+                  style={{ fontFamily: 'Quicksand-Bold', color: '#4b4b4b' }}
                 >
                   Người nhận 1
                 </Text>
@@ -505,6 +505,7 @@ export default function FullWidthScrollView () {
                 ,
                 { borderTopWidth: 1, borderTopColor: '#DADADA' }
               ]}
+              onPress={() => router.push('/VoucherList')}
             >
               <PngIcon name={VoucherIcon} size={24} />
               <View style={styles.voucherText}>
@@ -528,7 +529,14 @@ export default function FullWidthScrollView () {
             <Text style={{ fontFamily: 'Quicksand-Bold', color: '#27282D' }}>
               Lưu ý trước khi giao hàng
             </Text>
-            <Text style={{ fontSize: 12, lineHeight: 16, color: '#383A3F' }}>
+            <Text
+              style={{
+                fontSize: 12,
+                lineHeight: 16,
+                color: '#383A3F',
+                fontFamily: 'Quicksand-Medium'
+              }}
+            >
               Không hỗ trợ giao nhận các loại thư từ, tài liệu, hợp đồng và/hoặc
               các hàng hóa khác thuộc danh mục không được phép giao nhận được
               công bố tại website của Grab. Đặc biệt, giao và nhận hàng hóa bị
@@ -544,13 +552,14 @@ export default function FullWidthScrollView () {
               fontSize: 12,
               lineHeight: 16,
               marginTop: 24,
-              marginBottom: 16
+              marginBottom: 16,
+              fontFamily: 'Quicksand-Medium'
             }}
           >
             Bằng việc đặt giao đơn hàng này, bạn đã đồng ý với{' '}
             <Text style={{ color: '#1B6DC5' }}>
               Thông tin Dịch vụ, Điều khoản Sử dụng
-            </Text>{' '}
+            </Text>
             và <Text style={{ color: '#1B6DC5' }}>Quy chế Hoạt động</Text> của
             chúng tôi
           </Text>
@@ -859,7 +868,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   voucherTitle: {
-    color: '#000',
+    color: '#4b4b4b',
     fontSize: 16,
     fontFamily: 'Quicksand-Bold'
   },

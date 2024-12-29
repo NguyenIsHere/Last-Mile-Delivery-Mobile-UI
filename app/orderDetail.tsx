@@ -722,7 +722,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4
   },
   boldText: {
-    color: '#202020',
+    color: '#4B4B4B',
     fontFamily: 'Quicksand-Bold'
   },
   normalText: {
@@ -809,7 +809,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     width: screenWidth - 32,
-    marginBottom: 10
+    marginBottom: 10,
+    color: '#4B4B4B'
   },
   submitButtonGroup: {
     display: 'flex',
@@ -855,7 +856,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Quicksand-Medium'
   },
   submitContainerBoldText: {
-    color: '#000',
+    color: '#4b4b4b',
     fontSize: 20,
     fontFamily: 'Quicksand-Bold'
   },
@@ -866,7 +867,7 @@ const styles = StyleSheet.create({
     width: '100%'
   },
   voucherTitle: {
-    color: '#000',
+    color: '#4b4b4b',
     fontSize: 16,
     fontFamily: 'Quicksand-Bold',
     marginBottom: 10
@@ -884,6 +885,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     flex: 1,
-    fontFamily: 'Quicksand-Medium'
+    fontFamily: 'Quicksand-Medium',
+    color: '#6B6B6B'
   }
 })
