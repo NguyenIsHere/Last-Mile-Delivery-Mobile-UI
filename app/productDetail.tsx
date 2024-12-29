@@ -163,12 +163,12 @@ export default function productDetailInputScreen () {
         showsHorizontalScrollIndicator={false} // Ẩn thanh cuộn ngang (nếu có)
         contentContainerStyle={[styles.scrollView]}
       >
-        <Text style={{ fontFamily: 'Quicksand-Medium' }}>
+        <Text style={{ fontFamily: 'Quicksand-Medium', color: '#4b4b4b' }}>
           Thông tin này giúp các tài xế sắp xếp và bảo quản hàng đúng cách
         </Text>
         <View style={styles.imageContainer}>
           <Image
-            source={sizeImages[selectedSize]}
+            source={sizeImages[selectedSize] || small}
             style={{
               width: screenWidth,
               height: screenWidth / 2.5,
@@ -273,7 +273,7 @@ export default function productDetailInputScreen () {
                 </Text>
                 <SvgIcon
                   Icon={type.Icon}
-                  size={24}
+                  size={20}
                   color={
                     selectedType.name === type.name ? '#FFFFFF' : '#2A5958'
                   }
@@ -385,7 +385,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Quicksand-Bold',
     marginTop: 12,
-    marginBottom: 12
+    marginBottom: 12,
+    color: '#4B4B4B'
   },
 
   imageContainer: {
@@ -449,7 +450,8 @@ const styles = StyleSheet.create({
   kg: {
     marginLeft: 4,
     marginTop: 4,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Medium',
+    color: '#4B4B4B'
   },
   addImageButton: {
     display: 'flex',
@@ -470,7 +472,8 @@ const styles = StyleSheet.create({
   },
   typeGroupTitle: {
     fontSize: 16,
-    fontFamily: 'Quicksand-Bold'
+    fontFamily: 'Quicksand-Bold',
+    color: '#4B4B4B'
   },
   typeHorizontalList: {
     display: 'flex',
