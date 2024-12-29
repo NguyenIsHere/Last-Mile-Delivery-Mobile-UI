@@ -111,7 +111,14 @@ function RootLayoutNav () {
               animation: 'fade'
             }}
           />
-
+          <Stack.Screen
+            name='VoucherList'
+            options={{
+              title: 'Ưu đãi', // Tiêu đề màn hình
+              headerShown: true, // Hiển thị nút Back
+              animation: 'fade'
+            }}
+          />
           <Stack.Screen
             name='map'
             options={{

@@ -539,7 +539,10 @@ export default function FullWidthScrollView () {
           </View>
           <View style={styles.voucherGroup}>
             <Text style={styles.voucherTitle}>Áp dụng ưu đãi</Text>
-            <TouchableOpacity style={styles.voucherButton}>
+            <TouchableOpacity
+              style={styles.voucherButton}
+              onPress={() => router.push('/VoucherList')}
+            >
               <PngIcon name={VoucherIcon} size={24} />
               <View style={styles.voucherText}>
                 <Text style={styles.normalText}>
