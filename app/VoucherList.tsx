@@ -1,10 +1,11 @@
 const VoucherImg = require('../assets/images/grab-voucher.jpeg')
 const VanIcon = require('../assets/pngicons/Van_36x36.png')
+
 // types.ts
 export type Voucher = {
   id: string
   name: string
-  image: number // Changed from imageUrl to image for require() result
+  image: number
   daysRemaining: number
   isAvailable: boolean
   isSelected: boolean
@@ -25,17 +26,17 @@ import { Feather } from '@expo/vector-icons'
 
 interface VoucherItemProps {
   voucher: Voucher
-  onSelect?: (id: string) => void // Made optional
+  onSelect?: (id: string) => void
 }
 
 const VoucherItem: React.FC<VoucherItemProps> = ({
   voucher,
-  onSelect = () => {} // Default empty function
+  onSelect = () => {}
 }) => {
   const { name, image, daysRemaining, isAvailable, isSelected } = voucher
 
   const handleSelect = () => {
-    if (isAvailable && onSelect) {
+    if (isAvailable) {
       onSelect(voucher.id)
     }
   }
@@ -81,13 +82,9 @@ const VoucherItem: React.FC<VoucherItemProps> = ({
 }
 
 // VoucherList.tsx
-interface VoucherListProps {
-  vouchers?: Voucher[]
-  onVoucherSelect?: (id: string) => void // Made optional
-}
-
-const VoucherList: React.FC<VoucherListProps> = ({
-  vouchers = [
+const VoucherList: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [vouchers, setVouchers] = useState<Voucher[]>([
     {
       id: '1',
       name: 'Giảm 40% | Tối đa 15K',
@@ -144,10 +141,16 @@ const VoucherList: React.FC<VoucherListProps> = ({
       isAvailable: false,
       isSelected: false
     }
-  ],
-  onVoucherSelect = () => {} // Default empty function
-}) => {
-  const [searchQuery, setSearchQuery] = useState('')
+  ])
+
+  const handleSelectVoucher = (id: string) => {
+    setVouchers(currentVouchers =>
+      currentVouchers.map(voucher => ({
+        ...voucher,
+        isSelected: voucher.id === id && voucher.isAvailable
+      }))
+    )
+  }
 
   const filteredVouchers = vouchers.filter(voucher =>
     voucher.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -169,7 +172,7 @@ const VoucherList: React.FC<VoucherListProps> = ({
         <FlatList
           data={filteredVouchers}
           renderItem={({ item }) => (
-            <VoucherItem voucher={item} onSelect={onVoucherSelect} />
+            <VoucherItem voucher={item} onSelect={handleSelectVoucher} />
           )}
           keyExtractor={item => item.id}
           contentContainerStyle={styles.listContent}

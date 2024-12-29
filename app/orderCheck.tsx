@@ -492,7 +492,10 @@ export default function FullWidthScrollView () {
           {/* Chi tiết thanh toán */}
           <View style={styles.voucherGroup}>
             <Text style={styles.voucherTitle}>Chi tiết thanh toán</Text>
-            <TouchableOpacity style={styles.voucherButton}>
+            <TouchableOpacity
+              style={styles.voucherButton}
+              onPress={() => router.push('/Payment')}
+            >
               <SvgIcon Icon={MomoIcon} size={24} />
               <View style={styles.voucherText}>
                 <Text style={styles.normalText}>Momo</Text>
