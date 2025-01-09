@@ -245,14 +245,15 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Quicksand-Medium',
     marginTop: 24,
     marginLeft: 16
   },
   labelText: {
     fontSize: 14,
     marginBottom: 10,
-    color: '#5D5D5D'
+    color: '#5D5D5D',
+    fontFamily: 'Quicksand-Medium'
   },
   characterCountText: {
     fontSize: 12,
@@ -264,7 +265,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
-    padding: 16
+    padding: 16,
+    fontFamily: 'Quicksand-Medium'
   },
   submitButton: {
     backgroundColor: '#F5F6F6',

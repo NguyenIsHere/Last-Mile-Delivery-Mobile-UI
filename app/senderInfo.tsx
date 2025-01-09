@@ -245,26 +245,29 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontFamily: 'Quicksand-Medium',
     marginTop: 24,
     marginLeft: 16
   },
   labelText: {
     fontSize: 14,
     marginBottom: 10,
+    fontFamily: 'Quicksand-Medium',
     color: '#5D5D5D'
   },
   characterCountText: {
     fontSize: 12,
     color: '#5D5D5D',
     alignSelf: 'flex-end',
-    marginTop: 8
+    marginTop: 8,
+    fontFamily: 'Quicksand-Medium'
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 8,
-    padding: 16
+    padding: 16,
+    fontFamily: 'Quicksand-Medium'
   },
   submitButton: {
     backgroundColor: '#F5F6F6',
@@ -289,12 +292,12 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: '#5D5D5D',
     fontSize: 16,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Medium'
   },
   submitButtonTextActive: {
     color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Medium'
   },
   saveInfoGroup: {
     flexDirection: 'row',
@@ -308,7 +311,7 @@ const styles = StyleSheet.create({
   },
   saveInfoTitleText: {
     fontSize: 16,
-    fontWeight: 'bold'
+    fontFamily: 'Quicksand-Medium'
   },
   saveInfoSubText: {
     fontSize: 12,

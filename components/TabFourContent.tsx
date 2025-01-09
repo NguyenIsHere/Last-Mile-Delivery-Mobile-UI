@@ -33,8 +33,8 @@ const LogoutIcon = require('../assets/pngicons/035-exit.png')
 
 const screenWidth = Dimensions.get('window').width
 const avatar = require('../assets/images/Mei.png')
-const banner = require('../assets/images/banner.jpg')
-const backgroundImage = require('../assets/images/viettelbg.png')
+const banner = require('../assets/images/banner.jpeg')
+const backgroundImage = require('../assets/images/banner.jpeg')
 
 function PngIcon ({
   name,
