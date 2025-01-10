@@ -120,6 +120,14 @@ function RootLayoutNav () {
             }}
           />
           <Stack.Screen
+            name='Chat'
+            options={{
+              title: 'Tin nhắn', // Tiêu đề màn hình
+              headerShown: true, // Hiển thị nút Back
+              animation: 'fade'
+            }}
+          />
+          <Stack.Screen
             name='Payment'
             options={{
               title: 'Phương thức thanh toán', // Tiêu đề màn hình

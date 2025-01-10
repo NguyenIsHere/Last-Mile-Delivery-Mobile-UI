@@ -249,9 +249,10 @@ export default function map () {
                   backgroundColor: color.whiteColor50
                 }}
               ></View>
-              <View style={styles.contactIconContainer}>
-                <SvgIcon Icon={ChatIcon} size={24} />
-              </View>
+              <TouchableOpacity
+                style={styles.contactIconContainer}
+                onPress={() => router.push('/')}
+              ></TouchableOpacity>
             </View>
           </View>
           <View style={styles.orderInfo}>
