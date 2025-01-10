@@ -251,8 +251,10 @@ export default function map () {
               ></View>
               <TouchableOpacity
                 style={styles.contactIconContainer}
-                onPress={() => router.push('/')}
-              ></TouchableOpacity>
+                onPress={() => router.push('/Chat')}
+              >
+                <SvgIcon Icon={ChatIcon} size={24} />
+              </TouchableOpacity>
             </View>
           </View>
           <View style={styles.orderInfo}>

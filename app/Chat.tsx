@@ -12,6 +12,9 @@ import {
   Image
 } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
+import color from '../constants/color'
+
+const Driver = require('../assets/images/home-icon-Assistant.png')
 
 // Types for our chat messages
 interface Message {
@@ -30,31 +33,31 @@ interface ChatScreenProps {
 const initialMessages: Message[] = [
   {
     id: '1',
-    text: "Hi! I've picked up your order from the restaurant.",
+    text: 'Chào bạn! Mình đã lấy đơn hàng của bạn từ nhà hàng.',
     sender: 'driver',
     timestamp: new Date('2025-01-11T14:22:00')
   },
   {
     id: '2',
-    text: "Great! Could you please make sure there's extra sauce included?",
+    text: 'Tuyệt! Bạn có thể kiểm tra giúp mình xem có thêm nước sốt không nhé?',
     sender: 'user',
     timestamp: new Date('2025-01-11T14:22:30')
   },
   {
     id: '3',
-    text: "Yes, I've double-checked and confirmed the extra sauce is included.",
+    text: 'Dạ, mình đã kiểm tra kỹ rồi, có thêm nước sốt như bạn yêu cầu nhé.',
     sender: 'driver',
     timestamp: new Date('2025-01-11T14:23:00')
   },
   {
     id: '4',
-    text: "I'll be there in about 10 minutes. Traffic is smooth!",
+    text: 'Mình sẽ tới trong khoảng 10 phút nữa. Đường đang khá thông thoáng!',
     sender: 'driver',
     timestamp: new Date('2025-01-11T14:23:30')
   },
   {
     id: '5',
-    text: "Perfect, thank you! I'm at the lobby waiting.",
+    text: 'Hoàn hảo, cảm ơn bạn! Mình đang chờ ở sảnh.',
     sender: 'user',
     timestamp: new Date('2025-01-11T14:24:00')
   }
@@ -110,14 +113,14 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.driverInfo}>
-          {driverPhoto ? (
-            <Image source={{ uri: driverPhoto }} style={styles.driverPhoto} />
+          {Driver ? (
+            <Image source={Driver} style={styles.driverPhoto} />
           ) : (
             <View style={styles.driverPhotoPlaceholder} />
           )}
           <View style={styles.headerText}>
-            <Text style={styles.driverName}>{driverName}</Text>
-            <Text style={styles.orderNumber}>Order #{orderNumber}</Text>
+            <Text style={styles.driverName}>Nguyễn Thanh Hải</Text>
+            <Text style={styles.orderNumber}>Order #11098A8</Text>
           </View>
         </View>
       </View>
@@ -141,7 +144,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
             style={styles.input}
             value={newMessage}
             onChangeText={setNewMessage}
-            placeholder='Type a message...'
+            placeholder='Gõ tin nhắn...'
             placeholderTextColor='#666'
             multiline
           />
@@ -150,7 +153,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({
             onPress={sendMessage}
             disabled={!newMessage.trim()}
           >
-            <Text style={styles.sendButtonText}>Send</Text>
+            <Text style={styles.sendButtonText}>Gửi</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
@@ -165,7 +168,7 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 16,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: color.mainColor100,
     borderBottomWidth: 1,
     borderBottomColor: '#E9ECEF'
   },
@@ -176,7 +179,9 @@ const styles = StyleSheet.create({
   driverPhoto: {
     width: 40,
     height: 40,
-    borderRadius: 20
+    borderRadius: 20,
+    borderColor: '#FFFFFF',
+    borderWidth: 1
   },
   driverPhotoPlaceholder: {
     width: 40,
@@ -185,24 +190,29 @@ const styles = StyleSheet.create({
     backgroundColor: '#DDE2E5'
   },
   headerText: {
-    marginLeft: 12
+    marginLeft: 12,
+    fontFamily: 'Quicksand-Medium'
   },
   driverName: {
     fontSize: 16,
     fontWeight: '600',
-    color: '#212529'
+    color: '#FFF',
+    fontFamily: 'Quicksand-Medium'
   },
   orderNumber: {
     fontSize: 12,
-    color: '#6C757D',
-    marginTop: 2
+    color: '#FFF',
+    marginTop: 2,
+    fontFamily: 'Quicksand-Medium'
   },
   messagesList: {
     padding: 16
   },
   messageContainer: {
     maxWidth: '80%',
-    marginVertical: 4
+    marginVertical: 4,
+    backgroundColor: color.whiteColor70,
+    borderRadius: 16
   },
   messageContent: {
     padding: 12,
@@ -216,13 +226,15 @@ const styles = StyleSheet.create({
   },
   messageText: {
     fontSize: 14,
-    color: '#212529'
+    color: '#212529',
+    fontFamily: 'Quicksand-Medium'
   },
   timestamp: {
     fontSize: 10,
     color: '#6C757D',
     marginTop: 4,
-    textAlign: 'right'
+    textAlign: 'right',
+    fontFamily: 'Quicksand-Medium'
   },
   inputContainer: {
     flexDirection: 'row',
@@ -239,19 +251,22 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     marginRight: 8,
     fontSize: 14,
-    maxHeight: 100
+    maxHeight: 100,
+    fontFamily: 'Quicksand-Medium'
   },
   sendButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#00A5CF',
+    backgroundColor: color.mainColor100,
     borderRadius: 20,
-    paddingHorizontal: 16
+    paddingHorizontal: 16,
+    fontFamily: 'Quicksand-Medium'
   },
   sendButtonText: {
     color: '#FFFFFF',
     fontSize: 14,
-    fontWeight: '600'
+    fontWeight: '600',
+    fontFamily: 'Quicksand-Medium'
   }
 })
 
