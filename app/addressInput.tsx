@@ -394,20 +394,20 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flex: 1,
-    backgroundColor: '#FFFFFD',
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: 16
   },
   scrollView: {
     display: 'flex',
     flexGrow: 1,
     overflow: 'hidden',
-    backgroundColor: '#FFFFFD',
+    backgroundColor: '#FFFFFF',
     paddingBottom: 50
   },
   topContainer: {
     display: 'flex',
     flexDirection: 'row',
-    backgroundColor: '#FFFFFD',
+    backgroundColor: '#FFFFFF',
     paddingTop: 16
   },
   backContainer: {
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     marginTop: 8,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: '#FFFFFF',
     height: screenHeight * 0.7 * 0.2,
     flex: 1
   },
